@@ -1,0 +1,712 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة مسار | اربط دراستك بسوق العمل</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Modern Blue
+                        secondary: '#0D9488', // Teal
+                        dark: '#0F172A', // Slate 900
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F3F4F6;
+            scroll-behavior: smooth;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Modern Gradient for Hero - Light & Cheerful */
+        .hero-gradient {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
+            position: relative;
+        }
+        .hero-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(255,255,255,0) 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* Animations & Creative Touches */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .glowing-btn {
+            background: linear-gradient(90deg, #4F46E5, #3B82F6);
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+        }
+        .glowing-btn:hover {
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.6);
+            transform: translateY(-2px) scale(1.02);
+        }
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* Tabs Styles */
+        .tab-btn {
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active {
+            color: #2563EB;
+            border-bottom-color: #2563EB;
+            background-color: #EFF6FF;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom Scrollbar for Modal */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Timeline Styles for Roadmaps */
+        .timeline-container {
+            position: relative;
+            padding-right: 2rem;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0.5rem;
+            height: 100%;
+            width: 2px;
+            background-color: #E5E7EB;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        .timeline-dot {
+            position: absolute;
+            right: -1.85rem;
+            top: 0.25rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #4F46E5;
+            border: 2px solid #fff;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <nav class="bg-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
+                    <a href="#home" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
+                    <a href="#roadmaps" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
+                    <a href="#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
+                    <a href="#suggestions" class="text-gray-600 hover:text-primary font-medium transition">شاركنا أفكارك</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-gradient text-gray-900 py-20 lg:py-32 relative overflow-hidden">
+        <div class="hero-glow"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 text-gray-900">
+                        اربط دراستك الأكاديمية <br>
+                        <span class="text-primary">بمتطلبات سوق العمل</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl leading-relaxed">
+                        منصة "مسار" تقدم لك خرائط طريق (Roadmaps) واضحة وتفاعلية لتطوير مهاراتك. اكتشف كيف تستفيد من مناهجك الجامعية لبناء مسيرتك المهنية بثقة.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#roadmaps" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-lg transition shadow-lg shadow-blue-500/30">
+                            استكشف المسارات
+                        </a>
+                        <a href="#curriculum" class="bg-white border-2 border-gray-200 hover:border-primary hover:text-primary text-gray-700 px-8 py-3 rounded-full font-bold text-lg transition shadow-sm">
+                            المناهج وسوق العمل
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden lg:block relative floating-element">
+                    <!-- Abstract Decorative Shape -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-blue-300/30 to-purple-300/30 rounded-full blur-3xl pointer-events-none"></div>
+                    
+                    <!-- Clean Icons Composition -->
+                    <div class="relative w-full h-[450px] flex items-center justify-center">
+                        <!-- Main Element -->
+                        <div class="relative z-10 w-48 h-48 bg-white/90 backdrop-blur-xl border-4 border-white rounded-full shadow-2xl flex items-center justify-center text-primary">
+                            <i class="fa-solid fa-laptop-code text-7xl"></i>
+                        </div>
+                        
+                        <!-- Floating Badge 1 -->
+                        <div class="absolute top-1/4 -right-4 bg-white p-3 rounded-2xl shadow-xl z-20 flex items-center gap-3 animate-bounce" style="animation-duration: 4s;">
+                            <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-700 font-bold ml-2">تطوير الويب</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Floating Badge 2 -->
+                        <div class="absolute bottom-1/4 left-4 bg-white p-3 rounded-2xl shadow-xl z-20 flex items-center gap-3 floating-element" style="animation-delay: 1s;">
+                            <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-700 text-xl">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-700 font-bold ml-2">أمن سيبراني</p>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge 3 -->
+                        <div class="absolute -top-4 left-1/4 bg-white p-4 rounded-full shadow-lg z-20 animate-pulse">
+                            <i class="fa-solid fa-microchip text-teal-500 text-2xl"></i>
+                        </div>
+                        
+                        <!-- Floating Badge 4 -->
+                        <div class="absolute bottom-0 right-1/4 bg-white p-4 rounded-full shadow-lg z-20 floating-element" style="animation-delay: 2s;">
+                            <i class="fa-solid fa-gamepad text-purple-500 text-2xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Wave Divider -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none">
+            <svg class="relative block w-full h-12 md:h-24" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118,130.83,121.22,201.2,112.5,242.49,107.4,282.88,85.6,321.39,56.44Z" fill="#F3F4F6"></path>
+            </svg>
+        </div>
+    </header>
+
+    <section id="roadmaps" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">الخرائط التعليمية (Roadmaps)</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+                    اختر المجال الذي ترغب في تعلمه، وسنقدم لك خريطة تفصيلية بالخطوات والتقنيات المطلوبة لدخوله.
+                </p>
+            </div>
+
+            <!-- Dynamic Grid (Will be populated partially by JS, but keeping initial HTML for SEO/Structure) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="roadmaps-grid">
+                <!-- Data will be injected here via JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <section id="curriculum" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-primary font-bold tracking-wider uppercase text-sm">التطبيق العملي</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mt-2 mb-4">كيف تخدم مناهجك الأكاديمية مسارك المهني؟</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto text-lg">
+                    قمنا بتحليل المواد الدراسية التي تدرسها في الكلية، وربطناها مباشرة بالمهارات المطلوبة في سوق العمل حسب كل مسار تقني.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                <!-- Tabs Header -->
+                <div class="flex flex-nowrap overflow-x-auto border-b border-gray-200 bg-gray-50 custom-scrollbar">
+                    <button class="tab-btn active whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-se', this)">
+                        <i class="fa-solid fa-server ml-2"></i> هندسة البرمجيات
+                    </button>
+                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-ai', this)">
+                        <i class="fa-solid fa-brain ml-2"></i> الذكاء الاصطناعي
+                    </button>
+                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-cyber', this)">
+                        <i class="fa-solid fa-shield-halved ml-2"></i> الأمن السيبراني
+                    </button>
+                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-games', this)">
+                        <i class="fa-solid fa-gamepad ml-2"></i> تطوير الألعاب
+                    </button>
+                </div>
+
+                <!-- Tabs Content -->
+                <div class="p-6 md:p-8">
+                    
+                    <!-- Tab: Software Engineering -->
+                    <div id="tab-se" class="tab-content active">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-code text-primary ml-2"></i>البرمجة الشيئية (OOP)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">تمثل الأساس لكتابة كود نظيف وتغطي تصميم البرمجيات واختبارها، وهي مهارة لا غنى عنها في أي شركة لبناء أنظمة قابلة للتطوير.</p>
+                            </div>
+                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-sitemap text-primary ml-2"></i>تصميم وهندسة البرمجيات</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">تنقل الطالب لبيئة العمل الحقيقية عبر تعلم أسلوب التشفير النظيف، التقييم، وتصميم هيكلية متماسكة للمشاريع البرمجية.</p>
+                            </div>
+                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-database text-primary ml-2"></i>قواعد البيانات (Databases)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">أساسية لمطوري النظم الخلفية (Backend) لتعلم لغة SQL ومعمارية قواعد البيانات وأنظمة إدارتها بكفاءة.</p>
+                            </div>
+                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-microchip text-primary ml-2"></i>نظم التشغيل (OS)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">ضرورية لفهم كيفية جدولة المعالج (CPU)، إدارة الذاكرة، ونظم الملفات لإنشاء تطبيقات ويب أو سيرفرات ذات أداء عالٍ.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: AI -->
+                    <div id="tab-ai" class="tab-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100 md:col-span-2">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-network-wired text-secondary ml-2"></i>الشبكات العصبية (Neural Networks)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">تمثل قلب هذا المسار، حيث تدرس خوارزميات التعلم للشبكات العصبية الاصطناعية وتطبيقاتها في التعرف على الصور، النصوص، والتنبؤ.</p>
+                            </div>
+                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-cogs text-secondary ml-2"></i>تحليل وتصميم الخوارزميات</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">لتعلم خوارزميات "فرق تسود"، البرمجة الديناميكية، والبحث البياني والشجري، وهي الأدوات الأساسية لبناء نماذج ذكاء اصطناعي فعالة وسريعة.</p>
+                            </div>
+                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-square-root-variable text-secondary ml-2"></i>الرياضيات الداعمة</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">يعتمد المسار بقوة على "الجبر الخطي" لفهم الفراغات الاتجاهية، و"حزم البرامج الإحصائية" لخدمة الإحصاء التطبيقي والتحليل العددي.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Cyber -->
+                    <div id="tab-cyber" class="tab-content">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-user-shield text-dark ml-2"></i>أمن الحاسب (Computer Security)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">الدعامة الرئيسية لهذا المجال، حيث تغطي نقاط خرق الأمان، طرق الدفاع، وأساسيات التشفير وفك الشفرة لحماية الأنظمة من الاختراقات.</p>
+                            </div>
+                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-calculator text-dark ml-2"></i>رياضيات متقطعة (Discrete Math)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">توفر الأساس النظري القوي عبر الجبر البولياني، المنطق الرياضي، والبوابات والدوائر المنطقية التي يعتمد عليها علم التشفير (Cryptography).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab: Games -->
+                    <div id="tab-games" class="tab-content">
+                        <div class="grid grid-cols-1 gap-6">
+                            <div class="bg-purple-50/50 p-5 rounded-xl border border-purple-100">
+                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-shapes text-purple-600 ml-2"></i>الرسم بالحاسب (Computer Graphics)</h4>
+                                <p class="text-gray-700 text-sm leading-relaxed">مادة أساسية جداً لتعلم التحويلات ثلاثية الأبعاد (3D Transformations)، رسم الأشكال، وفهم التفاعل بين المكونات المادية (Hardware) والبرمجيات لبناء محركات الألعاب (Game Engines).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Suggestions Section -->
+    <section id="suggestions" class="py-20 bg-blue-50/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-primary font-bold tracking-wider uppercase text-sm">شاركنا أفكارك</span>
+                <h2 class="text-3xl font-extrabold text-dark mt-2 mb-4">صندوق الاقتراحات 💡</h2>
+                <p class="text-gray-600 text-lg">
+                    رأيك يهمنا! إذا كان لديك أي اقتراح لتطوير المنصة أو إضافة مسارات جديدة، لا تتردد في مشاركته معنا.
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100 relative overflow-hidden">
+                <!-- Decorative background elements -->
+                <div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-2xl"></div>
+                <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-secondary/5 rounded-full blur-2xl"></div>
+
+                <form onsubmit="event.preventDefault(); submitSuggestion();" class="space-y-6 relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">الاسم (اختياري)</label>
+                            <input type="text" id="sugg-name" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition bg-gray-50/50" placeholder="اسمك الكريم">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-2">البريد الإلكتروني (اختياري)</label>
+                            <input type="email" id="sugg-email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition bg-gray-50/50" placeholder="للتواصل معك">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">اقتراحك / رسالتك <span class="text-red-500">*</span></label>
+                        <textarea id="sugg-message" required rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition resize-none bg-gray-50/50" placeholder="اكتب اقتراحك أو استفسارك هنا..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-3 text-lg transform hover:-translate-y-1">
+                        <span>إرسال الاقتراح</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-2xl"></i>
+                    <span class="font-extrabold text-2xl text-white tracking-wide">مَسار</span>
+                </div>
+                <p class="text-sm text-gray-400 text-center md:text-right">
+                    © 2024 منصة مسار. تم التطوير كنموذج أولي لمسابقة برمجية. (بانتظار الربط بـ Firebase).
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition text-white">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition text-white">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Roadmap Modal Backdrop -->
+    <div id="roadmap-modal" class="fixed inset-0 z-50 hidden">
+        <!-- Background Overlay -->
+        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+        
+        <!-- Modal Content -->
+        <div class="absolute inset-0 flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative transform transition-all scale-100 opacity-100">
+                
+                <!-- Header -->
+                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
+                    <h3 id="modal-title" class="text-2xl font-bold text-dark">عنوان المسار</h3>
+                    <button onclick="closeModal()" class="text-gray-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Body (Scrollable) -->
+                <div class="p-6 overflow-y-auto custom-scrollbar">
+                    
+                    <!-- Intro & Concept -->
+                    <div class="mb-8 bg-indigo-50/50 p-6 rounded-xl border border-indigo-100">
+                        <h4 class="text-lg font-bold text-primary mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info"></i> ما هو هذا المجال؟
+                        </h4>
+                        <p id="modal-concept" class="text-gray-700 leading-relaxed text-sm md:text-base">
+                            شرح المفهوم الأساسي للمجال.
+                        </p>
+                    </div>
+
+                    <h4 class="text-xl font-bold text-dark mb-6 flex items-center gap-2 border-b pb-2">
+                        <i class="fa-solid fa-shoe-prints text-secondary"></i> خريطة الطريق (الخطوات)
+                    </h4>
+                    
+                    <!-- Timeline Container -->
+                    <div id="modal-timeline" class="timeline-container">
+                        <!-- Steps will be injected here via JS -->
+                    </div>
+
+                </div>
+                
+                <!-- Footer -->
+                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex justify-end">
+                    <button onclick="closeModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
+                        إغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Structure representing future Firebase Database Collections.
+         * For now, this is static JSON in memory.
+         * Later, you can easily replace `fetchRoadmaps()` to read from Firestore.
+         */
+        const databaseMock = {
+            roadmaps: [
+                {
+                    id: "se-backend",
+                    title: "هندسة البرمجيات وتطوير النظم",
+                    icon: "fa-server",
+                    color: "text-blue-600",
+                    bgColor: "bg-blue-50",
+                    shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات لضمان عمل التطبيقات بكفاءة وأمان.",
+                    concept: "تطوير النظم الخلفية (Backend) وهندسة البرمجيات هو العقل المدبر لأي تطبيق. يتضمن بناء الخوادم، تصميم قواعد البيانات، كتابة كود قابل للتوسع باستخدام مبادئ (OOP)، وتأمين العمليات المنطقية الخاصة بالنظام.",
+                    steps: [
+                        { title: "البرمجة الشيئية (OOP)", desc: "تعلم المفاهيم الأساسية (التغليف، الوراثة، تعدد الأشكال) لبناء كود نظيف وقابل لإعادة الاستخدام." },
+                        { title: "هياكل البيانات والخوارزميات", desc: "كيفية تخزين البيانات بكفاءة والبحث فيها وتعديلها بأسرع وقت ممكن." },
+                        { title: "قواعد البيانات (SQL & NoSQL)", desc: "تصميم الجداول، العلاقات، وكتابة استعلامات سريعة لاستخراج البيانات المطلوبة." },
+                        { title: "إطارات العمل (Backend Frameworks)", desc: "استخدام أدوات مثل Node.js, Spring Boot, أو Django لتسريع عملية البناء وتوفير الحماية." },
+                        { title: "نظم التشغيل وهندسة النظم", desc: "فهم الذاكرة، الجدولة، وكيفية نشر التطبيق على خوادم حقيقية (Deployment & Docker)." }
+                    ]
+                },
+                {
+                    id: "ai-ml",
+                    title: "الذكاء الاصطناعي وتعلم الآلة",
+                    icon: "fa-brain",
+                    color: "text-teal-600",
+                    bgColor: "bg-teal-50",
+                    shortDesc: "تدريب النماذج والخوارزميات لجعل الآلة قادرة على التنبؤ واتخاذ القرارات.",
+                    concept: "مجال الذكاء الاصطناعي يركز على بناء أنظمة قادرة على محاكاة الذكاء البشري. يعتمد بقوة على الرياضيات، تحليل البيانات، وتدريب الشبكات العصبية للتعرف على الأنماط.",
+                    steps: [
+                        { title: "الأساسيات الرياضية", desc: "إتقان الجبر الخطي، التفاضل، والإحصاء التطبيقي (الاحتمالات)." },
+                        { title: "لغة Python والمكتبات", desc: "تعلم بايثون ومكتبات التعامل مع البيانات مثل Pandas و NumPy." },
+                        { title: "تعلم الآلة (Machine Learning)", desc: "خوارزميات التصنيف والتنبؤ التقليدية (Decision Trees, SVM)." },
+                        { title: "الشبكات العصبية (Deep Learning)", desc: "بناء شبكات عصبية اصطناعية وتدريبها على الصور أو النصوص." },
+                        { title: "الخوارزميات المتقدمة", desc: "استخدام تقنيات البحث الشجري وتحسين النماذج (Optimization)." }
+                    ]
+                },
+                {
+                    id: "cybersecurity",
+                    title: "الأمن السيبراني",
+                    icon: "fa-shield-halved",
+                    color: "text-slate-700",
+                    bgColor: "bg-slate-100",
+                    shortDesc: "حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية والاختراقات.",
+                    concept: "الأمن السيبراني هو ممارسة حماية الأنظمة الحساسة والمعلومات من الهجمات الرقمية. يتطلب فهماً عميقاً للشبكات، أنظمة التشغيل، وعلم التشفير.",
+                    steps: [
+                        { title: "أساسيات الشبكات", desc: "فهم بروتوكولات الإنترنت (TCP/IP, HTTP/S) وكيفية تواصل الأجهزة." },
+                        { title: "أنظمة التشغيل المتقدمة", desc: "إتقان التعامل مع أنظمة Linux و Windows من سطر الأوامر." },
+                        { title: "أمن الحاسب والتشفير", desc: "تعلم الرياضيات المتقطعة، البوابات المنطقية، وخوارزميات التشفير وفك الشفرة." },
+                        { title: "اكتشاف الثغرات (Pen Testing)", desc: "البحث عن نقاط الضعف في التطبيقات وطرق ترقيعها." },
+                        { title: "الاستجابة للحوادث", desc: "كيفية تتبع الاختراقات وبناء أنظمة دفاعية قوية لحماية الخوادم." }
+                    ]
+                },
+                {
+                    id: "gamedev",
+                    title: "الرسوميات وتطوير الألعاب",
+                    icon: "fa-gamepad",
+                    color: "text-purple-600",
+                    bgColor: "bg-purple-50",
+                    shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم افتراضية وتفاعلية.",
+                    concept: "تطوير الألعاب والرسوميات الحاسوبية يعتمد على تحويل الأرقام والمعادلات إلى صور وعوالم ثلاثية الأبعاد تفاعلية تعتمد على الفيزياء والرياضيات.",
+                    steps: [
+                        { title: "أساسيات البرمجة", desc: "إتقان لغات مثل C++ أو C# وهي اللغات الأكثر استخداماً في محركات الألعاب." },
+                        { title: "الرسم بالحاسب (Computer Graphics)", desc: "فهم التحويلات ثلاثية الأبعاد (3D Transformations)، والإضاءة، ورسم الأشكال." },
+                        { title: "الرياضيات والفيزياء", desc: "تطبيق قوانين الحركة، الاصطدام، والمقذوفات داخل بيئة برمجية." },
+                        { title: "محركات الألعاب", desc: "استخدام أدوات قوية مثل Unity أو Unreal Engine لبناء اللعبة." },
+                        { title: "تصميم أنماط اللعب", desc: "ربط واجهة المستخدم، المؤثرات الصوتية، والمنطق البرمجي لخلق تجربة ممتعة." }
+                    ]
+                }
+            ]
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRoadmapsCards();
+        });
+
+        function openTab(tabId, btnElement) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.remove('bg-blue-50');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to clicked button
+            btnElement.classList.add('active');
+            btnElement.classList.add('bg-blue-50');
+        }
+
+        function renderRoadmapsCards() {
+            const container = document.getElementById('roadmaps-grid');
+            container.innerHTML = ''; // Clear container
+
+            // Mapping for card gradients based on ID
+            const styleMap = {
+                "se-backend": { grad: "from-blue-500 to-cyan-400" },
+                "ai-ml": { grad: "from-teal-500 to-emerald-400" },
+                "cybersecurity": { grad: "from-slate-700 to-gray-500" },
+                "gamedev": { grad: "from-purple-600 to-pink-500" }
+            };
+
+            databaseMock.roadmaps.forEach(roadmap => {
+                const styles = styleMap[roadmap.id];
+                const cardHTML = `
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 card-hover cursor-pointer group flex flex-col h-full overflow-hidden" 
+                         onclick="openModal('${roadmap.id}')">
+                        <!-- Card Icon Header -->
+                        <div class="h-48 w-full relative bg-gradient-to-br ${styles.grad} flex items-center justify-center overflow-hidden">
+                            <!-- Background FA Icon -->
+                            <i class="fa-solid ${roadmap.icon} text-9xl text-white opacity-10 absolute -right-4 -bottom-4 transform group-hover:scale-125 transition-transform duration-500"></i>
+                            <!-- Main Icon -->
+                            <div class="w-20 h-20 bg-white/20 backdrop-blur-sm border border-white/40 rounded-full flex items-center justify-center text-4xl text-white z-10 transform group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                                <i class="fa-solid ${roadmap.icon}"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition-colors">${roadmap.title}</h3>
+                            <p class="text-gray-600 mb-6 flex-grow text-sm leading-relaxed">
+                                ${roadmap.shortDesc}
+                            </p>
+                            <div class="flex items-center text-primary font-bold text-sm mt-auto group-hover:gap-2 transition-all gap-1">
+                                <span>عرض خريطة الطريق</span>
+                                <i class="fa-solid fa-arrow-left mt-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // Suggestions Logic
+        function submitSuggestion() {
+            const btn = document.querySelector('#suggestions button[type="submit"]');
+            const originalText = btn.innerHTML;
+            
+            // Loading State
+            btn.innerHTML = '<span>جاري الإرسال...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btn.classList.remove('hover:-translate-y-1');
+            
+            // Mock API Call delay
+            setTimeout(() => {
+                alert('شكرًا لك! تم استلام اقتراحك بنجاح، وسيتم مراجعته في أقرب وقت.');
+                
+                // Clear Form
+                document.getElementById('sugg-message').value = '';
+                document.getElementById('sugg-name').value = '';
+                document.getElementById('sugg-email').value = '';
+                
+                // Reset Button
+                btn.innerHTML = originalText;
+                btn.classList.remove('opacity-80', 'cursor-not-allowed');
+                btn.classList.add('hover:-translate-y-1');
+            }, 1200);
+        }
+
+        // Roadmap Modal Logic
+        const modal = document.getElementById('roadmap-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalConcept = document.getElementById('modal-concept');
+        const modalTimeline = document.getElementById('modal-timeline');
+
+        function openModal(roadmapId) {
+            // Find data in our "mock database"
+            const data = databaseMock.roadmaps.find(r => r.id === roadmapId);
+            if (!data) return;
+
+            // Populate text
+            modalTitle.textContent = data.title;
+            modalConcept.textContent = data.concept;
+
+            // Build Timeline Steps
+            modalTimeline.innerHTML = '';
+            data.steps.forEach((step, index) => {
+                const stepHTML = `
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="bg-gray-50 border border-gray-100 p-4 rounded-xl shadow-sm ml-2">
+                            <h5 class="font-bold text-primary mb-1 flex items-center gap-2">
+                                <span class="bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">${index + 1}</span>
+                                ${step.title}
+                            </h5>
+                            <p class="text-sm text-gray-600 pr-7 leading-relaxed">${step.desc}</p>
+                        </div>
+                    </div>
+                `;
+                modalTimeline.insertAdjacentHTML('beforeend', stepHTML);
+            });
+
+            // Show modal
+            modal.classList.remove('hidden');
+            // Slight delay for animation
+            setTimeout(() => {
+                modal.firstElementChild.nextElementSibling.classList.add('scale-100', 'opacity-100');
+                modal.firstElementChild.nextElementSibling.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+            
+            // Prevent body scrolling
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            // Hide modal animations
+            modal.firstElementChild.nextElementSibling.classList.remove('scale-100', 'opacity-100');
+            modal.firstElementChild.nextElementSibling.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }, 200);
+        }
+
+        // Close modal on Escape key press
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                if (!modal.classList.contains('hidden')) closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

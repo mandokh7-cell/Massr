@@ -60,28 +60,24 @@
             animation: float 6s ease-in-out infinite;
         }
 
-        /* Tabs Styles */
-        .tab-btn {
-            transition: all 0.3s ease;
+        /* Map Slider Animations */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-        .tab-btn.active {
-            color: #2563EB;
-            border-bottom-color: #2563EB;
-            background-color: #EFF6FF;
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
         }
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.5s ease-in-out;
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
         }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .animate-slide-left { animation: slideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-fade-in { animation: fadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         
-        /* Custom Scrollbar for elements that still need it */
+        /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -90,11 +86,11 @@
 </head>
 <body class="text-gray-800 antialiased relative">
 
-    <nav class="bg-white shadow-md sticky top-0 z-40">
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
-                    <a href="#" class="flex items-center gap-2">
+                    <a href="index.html" class="flex items-center gap-2">
                         <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </div>
@@ -105,7 +101,7 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8 space-x-reverse">
                     <a href="#home" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
-                    <a href="#roadmaps" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
+                    <a href="roadmap.html" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
                     <a href="#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
                     <a href="#suggestions" class="text-gray-600 hover:text-primary font-medium transition">شاركنا أفكارك</a>
                 </div>
@@ -123,7 +119,7 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
             <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
                 <a href="#home" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
-                <a href="#roadmaps" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">المسارات التقنية</a>
+                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">المسارات التقنية</a>
                 <a href="#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
                 <a href="#suggestions" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">شاركنا أفكارك</a>
             </div>
@@ -143,7 +139,7 @@
                         منصة "مسار" تقدم لك خرائط طريق (Roadmaps) واضحة وتفاعلية لتطوير مهاراتك ، اكتشف كيف تستفيد من مناهجك الجامعية لبناء مسيرتك المهنية بثقة.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#roadmaps" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-lg transition shadow-lg shadow-blue-500/30">
+                        <a href="roadmap.html" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-lg transition shadow-lg shadow-blue-500/30">
                             استكشف المسارات
                         </a>
                         <a href="#curriculum" class="bg-white border-2 border-gray-200 hover:border-primary hover:text-primary text-gray-700 px-8 py-3 rounded-full font-bold text-lg transition shadow-sm">
@@ -194,112 +190,108 @@
                 </p>
             </div>
 
-            <!-- Grid: Populated by JS, visually locked -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="roadmaps-grid">
-                <!-- Data will be injected here via JavaScript -->
+            <!-- Grid: Fixed 2 items for homepage -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" id="roadmaps-grid">
+                
+                <!-- 1. Locked Web Dev Roadmap -->
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 cursor-pointer group flex flex-col h-full overflow-hidden relative" onclick="showUnderDevelopmentMsg()">
+                    
+                    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
+                        <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-lock text-3xl text-white"></i>
+                        </div>
+                        <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
+                    </div>
+
+                    <div class="h-44 w-full relative bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
+                        <i class="fa-solid fa-laptop-code text-8xl text-gray-200 absolute -right-6 -bottom-6 transform rotate-12"></i>
+                        <div class="w-16 h-16 bg-white border border-gray-100 shadow-sm rounded-2xl flex items-center justify-center text-3xl text-gray-400 z-10">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-lg font-bold text-gray-400 mb-2">تطوير المواقع (Web Dev)</h3>
+                        <p class="text-gray-400 flex-grow text-sm leading-relaxed">
+                            تعلم كيفية بناء واجهات المستخدم التفاعلية والأنظمة الخلفية القوية خطوة بخطوة.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Locked Roadmap (Backend / SE) -->
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 cursor-pointer group flex flex-col h-full overflow-hidden relative" onclick="showUnderDevelopmentMsg()">
+                    
+                    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
+                        <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 transform group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-lock text-3xl text-white"></i>
+                        </div>
+                        <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
+                    </div>
+
+                    <div class="h-44 w-full relative bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
+                        <i class="fa-solid fa-server text-8xl text-gray-200 absolute -right-6 -bottom-6 transform rotate-12"></i>
+                        <div class="w-16 h-16 bg-white border border-gray-100 shadow-sm rounded-2xl flex items-center justify-center text-3xl text-gray-400 z-10">
+                            <i class="fa-solid fa-server"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-lg font-bold text-gray-400 mb-2">هندسة البرمجيات</h3>
+                        <p class="text-gray-400 flex-grow text-sm leading-relaxed">
+                            صناعة الأنظمة الخلفية وإدارة قواعد البيانات لضمان كفاءة المواقع.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="roadmap.html" class="inline-flex items-center gap-2 bg-white border border-gray-200 hover:border-primary hover:text-primary text-gray-700 px-6 py-3 rounded-xl font-bold text-base transition shadow-sm">
+                    عرض المزيد من المسارات <i class="fa-solid fa-arrow-left text-sm"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <section id="curriculum" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Interactive Curriculum Section -->
+    <section id="curriculum" class="py-24 bg-white relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-12">
-                <span class="text-primary font-bold tracking-wider uppercase text-sm">التطبيق العملي</span>
-                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mt-2 mb-4">كيف تخدم مناهجك الأكاديمية مسارك المهني؟</h2>
-                <p class="text-gray-600 max-w-3xl mx-auto text-lg">
-                    قمنا بتحليل المواد الدراسية التي تدرسها في الكلية، وربطناها مباشرة بالمهارات المطلوبة في سوق العمل حسب كل مسار تقني.
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-primary font-bold tracking-wider text-sm mb-3">التطبيق العملي</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">كيف تخدم مناهجك الأكاديمية مسارك المهني؟</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-lg">
+                    رحلة تفاعلية تربط المواد الدراسية التي تدرسها في الكلية بالمهارات المطلوبة في سوق العمل. اختر مسارك وابدأ الرحلة.
                 </p>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <!-- Tabs Header: Changed to Grid for mobile so all are visible -->
-                <div class="grid grid-cols-2 md:grid-cols-4 border-b border-gray-200 bg-gray-50">
-                    <button class="tab-btn active py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base" onclick="openTab('tab-se', this)">
-                        <i class="fa-solid fa-server md:ml-2 block md:inline mb-1 md:mb-0"></i> هندسة البرمجيات
-                    </button>
-                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-r md:border-r-0 border-gray-200" onclick="openTab('tab-ai', this)">
-                        <i class="fa-solid fa-brain md:ml-2 block md:inline mb-1 md:mb-0"></i> الذكاء الاصطناعي
-                    </button>
-                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-t md:border-t-0 border-gray-200" onclick="openTab('tab-cyber', this)">
-                        <i class="fa-solid fa-shield-halved md:ml-2 block md:inline mb-1 md:mb-0"></i> الأمن السيبراني
-                    </button>
-                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-t border-r md:border-t-0 md:border-r-0 border-gray-200" onclick="openTab('tab-games', this)">
-                        <i class="fa-solid fa-gamepad md:ml-2 block md:inline mb-1 md:mb-0"></i> تطوير الألعاب
-                    </button>
-                </div>
+            <!-- Floating Capsule Tabs -->
+            <div class="flex flex-wrap justify-center gap-2 bg-gray-50/80 p-2 border border-gray-100 rounded-3xl md:rounded-full mx-auto w-fit mb-12 shadow-[0_2px_10px_rgb(0,0,0,0.02)] backdrop-blur-md">
+                <button class="tab-btn bg-dark text-white shadow-md px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('se', this)">
+                    <i class="fa-solid fa-server"></i> هندسة برمجيات
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('ai', this)">
+                    <i class="fa-solid fa-brain"></i> ذكاء اصطناعي
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('cyber', this)">
+                    <i class="fa-solid fa-shield-halved"></i> أمن سيبراني
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('games', this)">
+                    <i class="fa-solid fa-gamepad"></i> تطوير ألعاب
+                </button>
+            </div>
 
-                <!-- Tabs Content -->
-                <div class="p-6 md:p-8">
-                    <!-- Tab: Software Engineering -->
-                    <div id="tab-se" class="tab-content active">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-code text-primary ml-2"></i>البرمجة الشيئية - OOP</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">تمثل الأساس لكتابة كود نظيف وتغطي تصميم البرمجيات واختبارها، وهي مهارة لا غنى عنها في أي شركة لبناء أنظمة قابلة للتطوير.</p>
-                            </div>
-                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-sitemap text-primary ml-2"></i>تصميم وهندسة البرمجيات</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">تنقل الطالب لبيئة العمل الحقيقية عبر تعلم أسلوب التشفير النظيف، التقييم ، وتصميم هيكلية متماسكة للمشاريع البرمجية.</p>
-                            </div>
-                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-database text-primary ml-2"></i>قواعد البيانات - Databases.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">أساسية لمطوري النظم الخلفية (Backend) لتعلم لغة SQL ومعمارية قواعد البيانات وأنظمة إدارتها بكفاءة.</p>
-                            </div>
-                            <div class="bg-blue-50/50 p-5 rounded-xl border border-blue-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-microchip text-primary ml-2"></i>نظم التشغيل OS.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">ضرورية لفهم كيفية جدولة المعالج (CPU)، إدارة الذاكرة، ونظم الملفات لإنشاء تطبيقات ويب أو سيرفرات ذات أداء عالٍ.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab: AI -->
-                    <div id="tab-ai" class="tab-content">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100 md:col-span-2">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-network-wired text-secondary ml-2"></i>الشبكات العصبية - Neural Networks.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">تمثل قلب هذا المسار، حيث تدرس خوارزميات التعلم للشبكات العصبية الاصطناعية وتطبيقاتها في التعرف على الصور، النصوص، والتنبؤ.</p>
-                            </div>
-                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-cogs text-secondary ml-2"></i>تحليل وتصميم الخوارزميات</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">لتعلم خوارزميات "فرق تسود"، البرمجة الديناميكية، والبحث البياني والشجري، وهي الأدوات الأساسية لبناء نماذج ذكاء اصطناعي فعالة وسريعة.</p>
-                            </div>
-                            <div class="bg-teal-50/50 p-5 rounded-xl border border-teal-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-square-root-variable text-secondary ml-2"></i>الرياضيات الداعمة</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">يعتمد المسار بقوة على "الجبر الخطي" لفهم الفراغات الاتجاهية، و"حزم البرامج الإحصائية" لخدمة الإحصاء التطبيقي والتحليل العددي.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab: Cyber -->
-                    <div id="tab-cyber" class="tab-content">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-user-shield text-dark ml-2"></i>أمن الحاسب - Computer Security.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">الدعامة الرئيسية لهذا المجال، حيث تغطي نقاط خرق الأمان، طرق الدفاع، وأساسيات التشفير وفك الشفرة لحماية الأنظمة من الاختراقات.</p>
-                            </div>
-                            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-calculator text-dark ml-2"></i>رياضيات متقطعة - Discrete Math.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">توفر الأساس النظري القوي عبر الجبر البولياني، المنطق الرياضي، والبوابات والدوائر المنطقية التي يعتمد عليها علم التشفير (Cryptography).</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab: Games -->
-                    <div id="tab-games" class="tab-content">
-                        <div class="grid grid-cols-1 gap-6">
-                            <div class="bg-purple-50/50 p-5 rounded-xl border border-purple-100">
-                                <h4 class="font-bold text-dark text-lg mb-2"><i class="fa-solid fa-shapes text-purple-600 ml-2"></i>الرسم بالحاسب - Computer Graphics.</h4>
-                                <p class="text-gray-700 text-sm leading-relaxed">مادة أساسية جداً لتعلم التحويلات ثلاثية الأبعاد (3D Transformations)، رسم الأشكال، وفهم التفاعل بين المكونات المادية (Hardware) والبرمجيات لبناء محركات الألعاب (Game Engines).</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+            <!-- Interactive Map/Stepper Content Area -->
+            <div id="curriculum-viewer" class="min-h-[400px] flex flex-col justify-between relative bg-transparent">
+                <!-- Javascript will inject the Map Stepper here -->
             </div>
         </div>
+        
+        <!-- Subtle background elements -->
+        <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue-50 rounded-full blur-3xl opacity-60 -z-0"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-teal-50 rounded-full blur-3xl opacity-60 -z-0"></div>
     </section>
 
-    <section id="suggestions" class="py-20 bg-blue-50/50">
+    <section id="suggestions" class="py-20 bg-gray-50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <span class="text-primary font-bold tracking-wider uppercase text-sm">شاركنا أفكارك</span>
@@ -309,7 +301,7 @@
                 </p>
             </div>
             
-            <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100 relative overflow-hidden">
+            <div class="bg-white rounded-[2rem] shadow-xl p-6 md:p-10 border border-gray-100 relative overflow-hidden">
                 <div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-2xl"></div>
                 <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-secondary/5 rounded-full blur-2xl"></div>
 
@@ -317,18 +309,18 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">الاسم</label>
-                            <input type="text" id="sugg-name" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition bg-gray-50/50" placeholder="اسمك الكريم">
+                            <input type="text" id="sugg-name" class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition bg-gray-50/50" placeholder="اسمك الكريم">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-2">البريد الإلكتروني</label>
-                            <input type="email" id="sugg-email" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition bg-gray-50/50" placeholder="للتواصل معك">
+                            <input type="email" id="sugg-email" class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition bg-gray-50/50" placeholder="للتواصل معك">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">اقتراحك / رسالتك <span class="text-red-500">*</span></label>
-                        <textarea id="sugg-message" required rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition resize-none bg-gray-50/50" placeholder="اكتب اقتراحك أو استفسارك هنا..."></textarea>
+                        <textarea id="sugg-message" required rows="4" class="w-full px-5 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition resize-none bg-gray-50/50" placeholder="اكتب اقتراحك أو استفسارك هنا..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-blue-500/30 flex items-center justify-center gap-3 text-lg transform hover:-translate-y-1">
+                    <button type="submit" class="w-full bg-dark hover:bg-gray-800 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-gray-900/20 flex items-center justify-center gap-3 text-lg transform hover:-translate-y-1">
                         <span>إرسال الاقتراح</span>
                         <i class="fa-solid fa-paper-plane"></i>
                     </button>
@@ -337,7 +329,7 @@
         </div>
     </section>
 
-    <!-- Footer Updated: Cleaned links, added copyright -->
+    <!-- Footer -->
     <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col items-center justify-center gap-4 text-center">
@@ -355,45 +347,34 @@
         </div>
     </footer>
 
-    
-    <!-- Custom Alert/Message Box (Replaces default alerts) -->
-    <div id="custom-msg-box" class="fixed inset-0 z-50 hidden flex-items-center justify-center p-4">
+    <!-- Custom Alert Box (Fixed sizing and spacing) -->
+    <div id="custom-msg-box" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <!-- Overlay -->
         <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity" onclick="closeCustomMsg()"></div>
         
-        <!-- Box Content -->
-        <div class="bg-white rounded-2xl p-8 shadow-2xl relative z-10 w-full max-w-md text-center transform scale-95 opacity-0 transition-all duration-300 mx-auto mt-32" id="custom-msg-content">
+        <!-- Box Content (Removed heavy padding/margins causing it to overflow) -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 w-full max-w-sm sm:max-w-md text-center transform scale-95 opacity-0 transition-all duration-300 mx-auto" id="custom-msg-content">
             
-            <div id="msg-icon-container" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-blue-100">
-                <i id="msg-icon" class="fa-solid fa-info text-4xl text-primary"></i>
+            <div id="msg-icon-container" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 bg-blue-100">
+                <i id="msg-icon" class="fa-solid fa-info text-3xl sm:text-4xl text-primary"></i>
             </div>
             
-            <h3 id="msg-title" class="text-2xl font-bold text-dark mb-3">العنوان</h3>
-            <p id="msg-body" class="text-gray-600 mb-8 text-lg">الرسالة تظهر هنا.</p>
+            <h3 id="msg-title" class="text-xl sm:text-2xl font-bold text-dark mb-2 sm:mb-3">العنوان</h3>
+            <p id="msg-body" class="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">الرسالة تظهر هنا.</p>
             
-            <button onclick="closeCustomMsg()" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-blue-500/30">
+            <button onclick="closeCustomMsg()" class="w-full bg-dark hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-gray-900/20">
                 حسناً، فهمت
             </button>
         </div>
     </div>
 
     <script>
-        // Database mock
-        const databaseMock = {
-            roadmaps: [
-                { id: "se-backend", title: "هندسة البرمجيات", icon: "fa-server", shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات." },
-                { id: "ai-ml", title: "الذكاء الاصطناعي", icon: "fa-brain", shortDesc: "تدريب النماذج والخوارزميات لاتخاذ القرارات." },
-                { id: "cybersecurity", title: "الأمن السيبراني", icon: "fa-shield-halved", shortDesc: "حماية الأنظمة والشبكات والبرامج من الاختراقات." },
-                { id: "gamedev", title: "تطوير الألعاب", icon: "fa-gamepad", shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم تفاعلية." }
-            ]
-        };
-
+        // --- 1. General Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            renderRoadmapsCards();
             setupMobileMenu();
+            renderCurriculumStep('fade');
         });
 
-        // Mobile Menu Logic
         function setupMobileMenu() {
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');
@@ -403,7 +384,6 @@
                 menu.classList.toggle('hidden');
             });
 
-            // Close menu when clicking a link
             links.forEach(link => {
                 link.addEventListener('click', () => {
                     menu.classList.add('hidden');
@@ -411,61 +391,175 @@
             });
         }
 
-        // Tabs Logic
-        function openTab(tabId, btnElement) {
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => content.classList.remove('active'));
+        // --- 2. Curriculum Interactive Map Logic ---
+        const curriculumData = {
+            'se': {
+                color: 'blue',
+                steps: [
+                    { titleAr: "البرمجة الشيئية", titleEn: "OOP", icon: "fa-code", desc: "تمثل الأساس لكتابة كود نظيف وتغطي تصميم البرمجيات واختبارها، وهي مهارة لا غنى عنها في أي شركة لبناء أنظمة قابلة للتطوير." },
+                    { titleAr: "تصميم البرمجيات", titleEn: "Design", icon: "fa-sitemap", desc: "تنقل الطالب لبيئة العمل الحقيقية عبر تعلم أسلوب التشفير النظيف، التقييم، وتصميم هيكلية متماسكة للمشاريع البرمجية." },
+                    { titleAr: "قواعد البيانات", titleEn: "Databases", icon: "fa-database", desc: "أساسية لمطوري النظم الخلفية (Backend) لتعلم لغة SQL ومعمارية قواعد البيانات وأنظمة إدارتها بكفاءة عالية." },
+                    { titleAr: "نظم التشغيل", titleEn: "OS", icon: "fa-microchip", desc: "ضرورية لفهم كيفية جدولة المعالج (CPU)، إدارة الذاكرة، ونظم الملفات لإنشاء تطبيقات ويب أو سيرفرات ذات أداء عالٍ." }
+                ]
+            },
+            'ai': {
+                color: 'teal',
+                steps: [
+                    { titleAr: "الشبكات العصبية", titleEn: "Neural Networks", icon: "fa-network-wired", desc: "تمثل قلب هذا المسار، حيث تدرس خوارزميات التعلم للشبكات العصبية الاصطناعية وتطبيقاتها في التعرف على الصور والتنبؤ." },
+                    { titleAr: "تحليل الخوارزميات", titleEn: "Algorithms", icon: "fa-cogs", desc: "لتعلم خوارزميات 'فرق تسود'، البرمجة الديناميكية، والبحث البياني، وهي أدوات أساسية لبناء نماذج ذكاء اصطناعي سريعة." },
+                    { titleAr: "الرياضيات الداعمة", titleEn: "Mathematics", icon: "fa-square-root-variable", desc: "يعتمد المسار بقوة على 'الجبر الخطي' لفهم الفراغات الاتجاهية، والإحصاء التطبيقي والتحليل العددي." }
+                ]
+            },
+            'cyber': {
+                color: 'slate',
+                steps: [
+                    { titleAr: "أمن الحاسب", titleEn: "Security", icon: "fa-user-shield", desc: "الدعامة الرئيسية لهذا المجال، حيث تغطي نقاط خرق الأمان، طرق الدفاع، وأساسيات التشفير لحماية الأنظمة من الاختراقات." },
+                    { titleAr: "رياضيات متقطعة", titleEn: "Discrete Math", icon: "fa-calculator", desc: "توفر الأساس النظري القوي عبر الجبر البولياني، المنطق الرياضي، والبوابات المنطقية التي يعتمد عليها علم التشفير." }
+                ]
+            },
+            'games': {
+                color: 'purple',
+                steps: [
+                    { titleAr: "الرسم بالحاسب", titleEn: "Graphics", icon: "fa-shapes", desc: "مادة أساسية جداً لتعلم التحويلات ثلاثية الأبعاد (3D)، رسم الأشكال، وفهم التفاعل بين المكونات المادية لبناء محركات الألعاب." }
+                ]
+            }
+        };
+
+        const colorMap = {
+            'blue': { text: 'text-blue-600', bg: 'bg-blue-600', lightBg: 'bg-blue-50/50', border: 'border-blue-100', btn: 'bg-blue-600 hover:bg-blue-700', ring: 'ring-blue-200' },
+            'teal': { text: 'text-teal-600', bg: 'bg-teal-600', lightBg: 'bg-teal-50/50', border: 'border-teal-100', btn: 'bg-teal-600 hover:bg-teal-700', ring: 'ring-teal-200' },
+            'slate': { text: 'text-slate-600', bg: 'bg-slate-600', lightBg: 'bg-slate-50', border: 'border-slate-200', btn: 'bg-slate-700 hover:bg-slate-800', ring: 'ring-slate-200' },
+            'purple': { text: 'text-purple-600', bg: 'bg-purple-600', lightBg: 'bg-purple-50/50', border: 'border-purple-100', btn: 'bg-purple-600 hover:bg-purple-700', ring: 'ring-purple-200' }
+        };
+
+        let currentTrackId = 'se';
+        let currentStepIndex = 0;
+
+        function changeTrack(trackId, btnElement) {
+            currentTrackId = trackId;
+            currentStepIndex = 0; 
 
             const btns = document.querySelectorAll('.tab-btn');
             btns.forEach(btn => {
-                btn.classList.remove('active');
-                btn.classList.remove('bg-blue-50');
+                btn.className = "tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2";
             });
+            btnElement.className = "tab-btn bg-dark text-white shadow-md px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2";
 
-            document.getElementById(tabId).classList.add('active');
-            btnElement.classList.add('active');
-            btnElement.classList.add('bg-blue-50');
+            renderCurriculumStep('fade');
         }
 
-        // Render Locked Roadmaps Cards
-        function renderRoadmapsCards() {
-            const container = document.getElementById('roadmaps-grid');
-            container.innerHTML = ''; 
+        function nextCurriculumStep() {
+            if(currentStepIndex < curriculumData[currentTrackId].steps.length - 1) {
+                currentStepIndex++;
+                renderCurriculumStep('right'); 
+            }
+        }
 
-            databaseMock.roadmaps.forEach(roadmap => {
-                const cardHTML = `
-                    <div class="bg-white rounded-2xl shadow-md border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative" 
-                         onclick="showUnderDevelopmentMsg()">
-                        
-                        <!-- Dark Overlay for Locked State -->
-                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
-                            <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-lock text-3xl text-white"></i>
-                            </div>
-                            <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
-                        </div>
+        function prevCurriculumStep() {
+            if(currentStepIndex > 0) {
+                currentStepIndex--;
+                renderCurriculumStep('left'); 
+            }
+        }
 
-                        <!-- Card Content (Visually Dimmed beneath overlay) -->
-                        <div class="h-48 w-full relative bg-gray-200 flex items-center justify-center overflow-hidden">
-                            <i class="fa-solid ${roadmap.icon} text-9xl text-gray-300 absolute -right-4 -bottom-4"></i>
-                            <div class="w-20 h-20 bg-white/50 border border-white/40 rounded-full flex items-center justify-center text-4xl text-gray-500 z-10">
-                                <i class="fa-solid ${roadmap.icon}"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-gray-400 mb-3">${roadmap.title}</h3>
-                            <p class="text-gray-400 mb-6 flex-grow text-sm leading-relaxed">
-                                ${roadmap.shortDesc}
-                            </p>
+        function goToCurriculumStep(index) {
+            if (index === currentStepIndex) return;
+            const direction = index > currentStepIndex ? 'right' : 'left';
+            currentStepIndex = index;
+            renderCurriculumStep(direction);
+        }
+
+        function renderCurriculumStep(animationDirection = 'fade') {
+            const track = curriculumData[currentTrackId];
+            const stepData = track.steps[currentStepIndex];
+            const theme = colorMap[track.color];
+            const totalSteps = track.steps.length;
+            
+            const viewer = document.getElementById('curriculum-viewer');
+            
+            let timelineHTML = `
+                <div class="relative flex justify-between items-center mb-8 w-full max-w-2xl mx-auto px-4 z-0">
+                    <div class="absolute top-1/2 right-0 w-full h-1 bg-gray-100 -translate-y-1/2 -z-10 rounded-full"></div>
+                    <div class="absolute top-1/2 right-0 h-1 ${theme.bg} -translate-y-1/2 -z-10 rounded-full transition-all duration-700 ease-out" style="width: ${(currentStepIndex / (totalSteps - 1 || 1)) * 100}%"></div>
+            `;
+            
+            for(let i = 0; i < totalSteps; i++) {
+                const isPast = i <= currentStepIndex;
+                const isActive = i === currentStepIndex;
+                const nodeClass = isPast 
+                    ? (isActive ? `${theme.bg} text-white border-white scale-125 shadow-md ring-4 ${theme.ring}` : `${theme.bg} text-white border-white hover:scale-110`) 
+                    : `bg-white text-gray-300 border-gray-200 hover:border-gray-300`;
+
+                timelineHTML += `
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="goToCurriculumStep(${i})">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-sm md:text-base border-4 transition-all duration-300 ${nodeClass}">
+                            ${i + 1}
                         </div>
                     </div>
                 `;
-                container.insertAdjacentHTML('beforeend', cardHTML);
-            });
+            }
+            timelineHTML += `</div>`;
+
+            let animationClass = 'animate-fade-in';
+            if(animationDirection === 'right') animationClass = 'animate-slide-right';
+            if(animationDirection === 'left') animationClass = 'animate-slide-left';
+
+            const cardHTML = `
+                <div class="flex-grow flex items-center justify-center mb-6 overflow-hidden w-full">
+                    <div class="w-full max-w-2xl mx-auto ${animationClass} bg-white border border-gray-100 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative transition-all group hover:border-gray-200 overflow-hidden">
+                        
+                        <div class="absolute -left-16 -top-16 w-48 h-48 ${theme.lightBg} rounded-full blur-3xl opacity-50 pointer-events-none transition-transform duration-700 group-hover:scale-125"></div>
+
+                        <div class="flex items-center gap-4 mb-5 relative z-10 border-b border-gray-50 pb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl ${theme.lightBg} border ${theme.border} flex items-center justify-center shadow-sm text-2xl ${theme.text}">
+                                <i class="fa-solid ${stepData.icon}"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-gray-400 mb-1.5 flex items-center gap-1">
+                                    <i class="fa-solid fa-map-pin"></i> المحطة ${currentStepIndex + 1}
+                                </span>
+                                <h3 class="text-lg md:text-xl font-bold text-dark flex items-center gap-2 flex-wrap">
+                                    ${stepData.titleAr}
+                                    <span class="text-[10px] md:text-xs font-black px-2 py-0.5 rounded-md ${theme.bg} text-white uppercase tracking-wider shadow-sm">${stepData.titleEn}</span>
+                                </h3>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 pl-2">
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed md:leading-loose font-medium">
+                                ${stepData.desc}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            let footerHTML = `<div class="flex items-center justify-between mt-auto max-w-2xl mx-auto w-full px-2">`;
+            
+            if(currentStepIndex > 0) {
+                footerHTML += `<button onclick="prevCurriculumStep()" class="px-5 py-2.5 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm md:text-base">
+                    <i class="fa-solid fa-arrow-right text-xs"></i> المحطة السابقة
+                </button>`;
+            } else {
+                footerHTML += `<div></div>`;
+            }
+
+            if(currentStepIndex < totalSteps - 1) {
+                footerHTML += `<button onclick="nextCurriculumStep()" class="px-6 py-2.5 rounded-xl font-bold text-white shadow-md ${theme.btn} transition-all flex items-center gap-2 text-sm md:text-base transform hover:-translate-y-0.5">
+                    المحطة التالية <i class="fa-solid fa-arrow-left text-xs"></i>
+                </button>`;
+            } else {
+                footerHTML += `<div class="px-6 py-2.5 rounded-xl font-bold text-gray-400 bg-gray-50 border border-gray-100 flex items-center gap-2 text-sm md:text-base">
+                    نهاية المسار <i class="fa-solid fa-flag-checkered"></i>
+                </div>`;
+            }
+            footerHTML += `</div>`;
+
+            viewer.innerHTML = timelineHTML + cardHTML + footerHTML;
         }
 
-        // Custom Message Box Logic (Replacing window.alert)
+
+        // --- 4. Custom Message Box ---
         function showCustomMsg(title, body, iconClass, iconBg, iconColor) {
             const box = document.getElementById('custom-msg-box');
             const content = document.getElementById('custom-msg-content');
@@ -476,16 +570,16 @@
             const iconContainer = document.getElementById('msg-icon-container');
             const icon = document.getElementById('msg-icon');
             
-            iconContainer.className = `w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${iconBg}`;
-            icon.className = `fa-solid ${iconClass} text-4xl ${iconColor}`;
+            iconContainer.className = `w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 ${iconBg}`;
+            icon.className = `fa-solid ${iconClass} text-3xl sm:text-4xl ${iconColor}`;
 
+            // Remove hidden and use flex
             box.classList.remove('hidden');
-            box.classList.add('flex');
-            
-            setTimeout(() => {
+            // Adding a small delay ensures the display:flex is applied before we animate opacity/scale
+            requestAnimationFrame(() => {
                 content.classList.add('scale-100', 'opacity-100');
                 content.classList.remove('scale-95', 'opacity-0');
-            }, 10);
+            });
             
             document.body.style.overflow = 'hidden';
         }
@@ -499,23 +593,21 @@
             
             setTimeout(() => {
                 box.classList.add('hidden');
-                box.classList.remove('flex');
                 document.body.style.overflow = 'auto';
-            }, 200);
+            }, 300);
         }
 
-        // Specific Message Triggers
         function showUnderDevelopmentMsg() {
             showCustomMsg(
                 "نحن نعمل على ذلك",
                 "عذراً، هذا المسار التعليمي لا يزال قيد التطوير والإنشاء. نعدك بإتاحته في أقرب وقت لتقديم أفضل تجربة تعليمية لك.",
                 "fa-person-digging",
-                "bg-orange-100",
+                "bg-orange-50",
                 "text-orange-500"
             );
         }
 
-        // Suggestions Logic Updated to use Custom Msg
+        // --- 5. Suggestion Form ---
         function submitSuggestion() {
             const btn = document.querySelector('#suggestions button[type="submit"]');
             const originalText = btn.innerHTML;
@@ -525,21 +617,18 @@
             btn.classList.remove('hover:-translate-y-1');
             
             setTimeout(() => {
-                // Show beautiful success message instead of alert
                 showCustomMsg(
                     "شكراً جزيلاً لك",
                     "تم استلام اقتراحك بنجاح. فريقنا سيقوم بمراجعته قريباً، رأيك يساعدنا دائماً على التطور.",
                     "fa-circle-check",
-                    "bg-green-100",
+                    "bg-green-50",
                     "text-green-500"
                 );
                 
-                // Clear Form
                 document.getElementById('sugg-message').value = '';
                 document.getElementById('sugg-name').value = '';
                 document.getElementById('sugg-email').value = '';
                 
-                // Reset Button
                 btn.innerHTML = originalText;
                 btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 btn.classList.add('hover:-translate-y-1');

@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة مسار | الخرائط التعليمية</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Modern Blue
+                        secondary: '#0D9488', // Teal
+                        dark: '#0F172A', // Slate 900
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F9FAFB; /* Very light gray for this specific page */
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Simple subtle pattern background */
+        .bg-pattern {
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased relative custom-scrollbar">
+
+    <!-- Navigation matches index.html -->
+    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
+                    <a href="index.html" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
+                    <a href="roadmap.html" class="text-primary font-bold transition">المسارات التقنية</a>
+                    <a href="index.html#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
+                    <a href="index.html#suggestions" class="text-gray-600 hover:text-primary font-medium transition">شاركنا أفكارك</a>
+                </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none text-2xl p-2 rounded-lg bg-gray-50">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
+            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
+                <a href="index.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
+                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-primary bg-blue-50 transition">المسارات التقنية</a>
+                <a href="index.html#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
+                <a href="index.html#suggestions" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">شاركنا أفكارك</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="py-16 bg-white border-b border-gray-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/4"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-teal-50 rounded-full blur-3xl opacity-50 translate-y-1/2 -translate-x-1/4"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-primary font-bold tracking-wider text-sm mb-3"><i class="fa-solid fa-compass ml-1"></i> دليلك للتعلم</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-dark mb-4 tracking-tight">الخرائط التعليمية الشاملة</h1>
+            <p class="text-gray-500 max-w-2xl mx-auto text-lg leading-relaxed">
+                اكتشف جميع المسارات التقنية المتاحة. نوفر لك تسلسلاً منطقياً للمهارات والتقنيات التي تحتاجها للوصول إلى هدفك المهني.
+            </p>
+        </div>
+    </header>
+
+    <!-- All Roadmaps Section -->
+    <section class="py-16 bg-pattern min-h-[50vh]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="all-roadmaps-grid">
+                <!-- Javascript will inject cards here -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center justify-center gap-4 text-center">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-3xl"></i>
+                    <span class="font-extrabold text-3xl text-white tracking-wide">مَسار</span>
+                </div>
+                <p class="text-gray-400 text-lg">
+                    جميع الحقوق محفوظة لمنصة مسار © 2026
+                </p>
+                <p class="text-sm text-gray-500">
+                    تم التطوير كنموذج أولي لمسابقة برمجية.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Alert Box (Fixed sizing and spacing) -->
+    <div id="custom-msg-box" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity" onclick="closeCustomMsg()"></div>
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 w-full max-w-sm sm:max-w-md text-center transform scale-95 opacity-0 transition-all duration-300 mx-auto" id="custom-msg-content">
+            <div id="msg-icon-container" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 bg-blue-100">
+                <i id="msg-icon" class="fa-solid fa-info text-3xl sm:text-4xl text-primary"></i>
+            </div>
+            
+            <h3 id="msg-title" class="text-xl sm:text-2xl font-bold text-dark mb-2 sm:mb-3">العنوان</h3>
+            <p id="msg-body" class="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">الرسالة تظهر هنا.</p>
+            
+            <button onclick="closeCustomMsg()" class="w-full bg-dark hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-gray-900/20">
+                حسناً، فهمت
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Database mock for all roadmaps
+        const allRoadmapsData = [
+            { 
+                id: "web-dev", 
+                title: "تطوير المواقع", 
+                titleEn: "Web Development",
+                icon: "fa-laptop-code", 
+                shortDesc: "تعلم كيفية بناء واجهات المستخدم التفاعلية والأنظمة الخلفية القوية خطوة بخطوة.",
+                colorClass: "blue",
+                isLocked: true 
+            },
+            { 
+                id: "se-backend", 
+                title: "هندسة البرمجيات", 
+                titleEn: "Software Engineering",
+                icon: "fa-server", 
+                shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات لضمان كفاءة المواقع.",
+                colorClass: "gray",
+                isLocked: true 
+            },
+            { 
+                id: "ai-ml", 
+                title: "الذكاء الاصطناعي", 
+                titleEn: "AI & Machine Learning",
+                icon: "fa-brain", 
+                shortDesc: "تدريب النماذج والخوارزميات لاتخاذ القرارات وتحليل البيانات.",
+                colorClass: "teal",
+                isLocked: true 
+            },
+            { 
+                id: "cybersecurity", 
+                title: "الأمن السيبراني", 
+                titleEn: "Cyber Security",
+                icon: "fa-shield-halved", 
+                shortDesc: "حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية والاختراقات.",
+                colorClass: "slate",
+                isLocked: true 
+            },
+            { 
+                id: "gamedev", 
+                title: "تطوير الألعاب", 
+                titleEn: "Game Development",
+                icon: "fa-gamepad", 
+                shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم تفاعلية 2D و 3D.",
+                colorClass: "purple",
+                isLocked: true 
+            },
+            { 
+                id: "mobile-dev", 
+                title: "تطوير التطبيقات", 
+                titleEn: "Mobile Development",
+                icon: "fa-mobile-screen", 
+                shortDesc: "برمجة تطبيقات ذكية تعمل على أنظمة أندرويد و iOS باستخدام أحدث التقنيات.",
+                colorClass: "green",
+                isLocked: true 
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupMobileMenu();
+            renderAllRoadmaps();
+        });
+
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+        }
+
+        function renderAllRoadmaps() {
+            const container = document.getElementById('all-roadmaps-grid');
+            container.innerHTML = ''; 
+
+            allRoadmapsData.forEach(roadmap => {
+                
+                let cardHTML = '';
+                
+                if (roadmap.isLocked) {
+                    // Locked Card Design
+                    cardHTML = `
+                    <div class="bg-white rounded-3xl shadow-sm border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative" onclick="showUnderDevelopmentMsg()">
+                        
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
+                            <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 transform group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-lock text-3xl text-white"></i>
+                            </div>
+                            <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
+                        </div>
+
+                        <div class="h-44 w-full relative bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
+                            <i class="fa-solid ${roadmap.icon} text-8xl text-gray-200 absolute -right-6 -bottom-6 transform rotate-12"></i>
+                            <div class="w-16 h-16 bg-white border border-gray-100 shadow-sm rounded-2xl flex items-center justify-center text-3xl text-gray-400 z-10">
+                                <i class="fa-solid ${roadmap.icon}"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 flex flex-col flex-grow">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-lg font-bold text-gray-400">${roadmap.title}</h3>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-gray-100 text-gray-400 uppercase tracking-wider">${roadmap.titleEn}</span>
+                            </div>
+                            <p class="text-gray-400 flex-grow text-sm leading-relaxed">
+                                ${roadmap.shortDesc}
+                            </p>
+                        </div>
+                    </div>
+                    `;
+                } else {
+                    // Active Card Design (Web Dev)
+                    cardHTML = `
+                    <div class="bg-white rounded-3xl shadow-sm border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-200">
+                        
+                        <div class="h-44 w-full relative bg-blue-50 flex items-center justify-center overflow-hidden border-b border-blue-100/50">
+                            <i class="fa-solid ${roadmap.icon} text-8xl text-blue-100 absolute -right-6 -bottom-6 transform rotate-12 group-hover:scale-110 transition-transform duration-500"></i>
+                            <div class="w-16 h-16 bg-white border border-blue-100 shadow-md rounded-2xl flex items-center justify-center text-3xl text-primary z-10 group-hover:-translate-y-2 transition-transform duration-300">
+                                <i class="fa-solid ${roadmap.icon}"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 flex flex-col flex-grow relative">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="text-lg font-bold text-dark group-hover:text-primary transition-colors">${roadmap.title}</h3>
+                                <span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 uppercase tracking-wider">${roadmap.titleEn}</span>
+                            </div>
+                            <p class="text-gray-500 flex-grow text-sm leading-relaxed mb-4">
+                                ${roadmap.shortDesc}
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-gray-50 flex justify-between items-center text-sm font-bold text-primary opacity-80 group-hover:opacity-100 transition-opacity">
+                                <span>ابدأ التعلم الآن</span>
+                                <i class="fa-solid fa-arrow-left transform group-hover:-translate-x-1 transition-transform"></i>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }
+
+                container.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // Custom Message Box Logic
+        function showCustomMsg(title, body, iconClass, iconBg, iconColor) {
+            const box = document.getElementById('custom-msg-box');
+            const content = document.getElementById('custom-msg-content');
+            
+            document.getElementById('msg-title').textContent = title;
+            document.getElementById('msg-body').textContent = body;
+            
+            const iconContainer = document.getElementById('msg-icon-container');
+            const icon = document.getElementById('msg-icon');
+            
+            iconContainer.className = `w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 ${iconBg}`;
+            icon.className = `fa-solid ${iconClass} text-3xl sm:text-4xl ${iconColor}`;
+
+            box.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                content.classList.add('scale-100', 'opacity-100');
+                content.classList.remove('scale-95', 'opacity-0');
+            });
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCustomMsg() {
+            const box = document.getElementById('custom-msg-box');
+            const content = document.getElementById('custom-msg-content');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                box.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function showUnderDevelopmentMsg() {
+            showCustomMsg(
+                "نحن نعمل على ذلك",
+                "عذراً، هذا المسار التعليمي لا يزال قيد التطوير والإنشاء. نعدك بإتاحته في أقرب وقت لتقديم أفضل تجربة تعليمية لك.",
+                "fa-person-digging",
+                "bg-orange-50",
+                "text-orange-500"
+            );
+        }
+    </script>
+</body>
+</html>

@@ -26,24 +26,15 @@
             }
         }
     </script>
+    
     <style>
         body {
             font-family: 'Tajawal', sans-serif;
             background-color: #F3F4F6;
             scroll-behavior: smooth;
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        }
         
-        /* Modern Gradient for Hero - Light & Cheerful */
+        /* Modern Gradient for Hero */
         .hero-gradient {
             background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
             position: relative;
@@ -59,7 +50,7 @@
             pointer-events: none;
         }
 
-        /* Animations & Creative Touches */
+        /* Animations */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
@@ -67,20 +58,6 @@
         }
         .floating-element {
             animation: float 6s ease-in-out infinite;
-        }
-        
-        .glowing-btn {
-            background: linear-gradient(90deg, #4F46E5, #3B82F6);
-            background-size: 200% auto;
-            animation: shine 3s linear infinite;
-            box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
-        }
-        .glowing-btn:hover {
-            box-shadow: 0 0 30px rgba(79, 70, 229, 0.6);
-            transform: translateY(-2px) scale(1.02);
-        }
-        @keyframes shine {
-            to { background-position: 200% center; }
         }
 
         /* Tabs Styles */
@@ -104,53 +81,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Custom Scrollbar for Modal */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 8px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #cbd5e1; 
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8; 
-        }
-
-        /* Timeline Styles for Roadmaps */
-        .timeline-container {
-            position: relative;
-            padding-right: 2rem;
-        }
-        .timeline-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0.5rem;
-            height: 100%;
-            width: 2px;
-            background-color: #E5E7EB;
-        }
-        .timeline-item {
-            position: relative;
-            margin-bottom: 1.5rem;
-        }
-        .timeline-dot {
-            position: absolute;
-            right: -1.85rem;
-            top: 0.25rem;
-            width: 1rem;
-            height: 1rem;
-            border-radius: 50%;
-            background-color: #4F46E5;
-            border: 2px solid #fff;
-        }
+        /* Custom Scrollbar for elements that still need it */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="text-gray-800 antialiased">
+<body class="text-gray-800 antialiased relative">
 
     <nav class="bg-white shadow-md sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -163,12 +101,31 @@
                         <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
                     </a>
                 </div>
+                
+                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8 space-x-reverse">
                     <a href="#home" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
                     <a href="#roadmaps" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
                     <a href="#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
                     <a href="#suggestions" class="text-gray-600 hover:text-primary font-medium transition">شاركنا أفكارك</a>
                 </div>
+
+                <!-- Mobile Hamburger Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none text-2xl p-2 rounded-lg bg-gray-50">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
+            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
+                <a href="#home" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
+                <a href="#roadmaps" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">المسارات التقنية</a>
+                <a href="#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
+                <a href="#suggestions" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">شاركنا أفكارك</a>
             </div>
         </div>
     </nav>
@@ -195,17 +152,11 @@
                     </div>
                 </div>
                 <div class="hidden lg:block relative floating-element">
-                    <!-- Abstract Decorative Shape -->
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] bg-gradient-to-tr from-blue-300/30 to-purple-300/30 rounded-full blur-3xl pointer-events-none"></div>
-                    
-                    <!-- Clean Icons Composition -->
                     <div class="relative w-full h-[450px] flex items-center justify-center">
-                        <!-- Main Element -->
                         <div class="relative z-10 w-48 h-48 bg-white/90 backdrop-blur-xl border-4 border-white rounded-full shadow-2xl flex items-center justify-center text-primary">
                             <i class="fa-solid fa-laptop-code text-7xl"></i>
                         </div>
-                        
-                        <!-- Floating Badge 1 -->
                         <div class="absolute top-1/4 -right-4 bg-white p-3 rounded-2xl shadow-xl z-20 flex items-center gap-3 animate-bounce" style="animation-duration: 4s;">
                             <div class="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 text-xl">
                                 <i class="fa-solid fa-code"></i>
@@ -214,8 +165,6 @@
                                 <p class="text-sm text-gray-700 font-bold ml-2">تطوير الويب</p>
                             </div>
                         </div>
-                        
-                        <!-- Floating Badge 2 -->
                         <div class="absolute bottom-1/4 left-4 bg-white p-3 rounded-2xl shadow-xl z-20 flex items-center gap-3 floating-element" style="animation-delay: 1s;">
                             <div class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-slate-700 text-xl">
                                 <i class="fa-solid fa-shield-halved"></i>
@@ -223,16 +172,6 @@
                             <div>
                                 <p class="text-sm text-gray-700 font-bold ml-2">أمن سيبراني</p>
                             </div>
-                        </div>
-
-                        <!-- Floating Badge 3 -->
-                        <div class="absolute -top-4 left-1/4 bg-white p-4 rounded-full shadow-lg z-20 animate-pulse">
-                            <i class="fa-solid fa-microchip text-teal-500 text-2xl"></i>
-                        </div>
-                        
-                        <!-- Floating Badge 4 -->
-                        <div class="absolute bottom-0 right-1/4 bg-white p-4 rounded-full shadow-lg z-20 floating-element" style="animation-delay: 2s;">
-                            <i class="fa-solid fa-gamepad text-purple-500 text-2xl"></i>
                         </div>
                     </div>
                 </div>
@@ -249,13 +188,13 @@
     <section id="roadmaps" class="py-20 bg-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">الخرائط التعليمية - Roadmaps.</h2>
+                <h2 class="text-[1.35rem] sm:text-3xl md:text-4xl font-extrabold text-dark mb-4 whitespace-nowrap tracking-tight">الخرائط التعليمية - Roadmaps.</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto text-lg">
                     اختر المجال الذي ترغب في تعلمه، وسنقدم لك خريطة تفصيلية بالخطوات والتقنيات المطلوبة لدخوله.
                 </p>
             </div>
 
-            <!-- Dynamic Grid (Will be populated partially by JS, but keeping initial HTML for SEO/Structure) -->
+            <!-- Grid: Populated by JS, visually locked -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="roadmaps-grid">
                 <!-- Data will be injected here via JavaScript -->
             </div>
@@ -273,25 +212,24 @@
             </div>
 
             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                <!-- Tabs Header -->
-                <div class="flex flex-nowrap overflow-x-auto border-b border-gray-200 bg-gray-50 custom-scrollbar">
-                    <button class="tab-btn active whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-se', this)">
-                        <i class="fa-solid fa-server ml-2"></i> هندسة البرمجيات
+                <!-- Tabs Header: Changed to Grid for mobile so all are visible -->
+                <div class="grid grid-cols-2 md:grid-cols-4 border-b border-gray-200 bg-gray-50">
+                    <button class="tab-btn active py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base" onclick="openTab('tab-se', this)">
+                        <i class="fa-solid fa-server md:ml-2 block md:inline mb-1 md:mb-0"></i> هندسة البرمجيات
                     </button>
-                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-ai', this)">
-                        <i class="fa-solid fa-brain ml-2"></i> الذكاء الاصطناعي
+                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-r md:border-r-0 border-gray-200" onclick="openTab('tab-ai', this)">
+                        <i class="fa-solid fa-brain md:ml-2 block md:inline mb-1 md:mb-0"></i> الذكاء الاصطناعي
                     </button>
-                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-cyber', this)">
-                        <i class="fa-solid fa-shield-halved ml-2"></i> الأمن السيبراني
+                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-t md:border-t-0 border-gray-200" onclick="openTab('tab-cyber', this)">
+                        <i class="fa-solid fa-shield-halved md:ml-2 block md:inline mb-1 md:mb-0"></i> الأمن السيبراني
                     </button>
-                    <button class="tab-btn whitespace-nowrap flex-1 py-4 px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none" onclick="openTab('tab-games', this)">
-                        <i class="fa-solid fa-gamepad ml-2"></i> تطوير الألعاب
+                    <button class="tab-btn py-4 px-2 md:px-6 text-center font-bold text-gray-600 border-b-2 border-transparent hover:text-primary focus:outline-none text-sm md:text-base border-t border-r md:border-t-0 md:border-r-0 border-gray-200" onclick="openTab('tab-games', this)">
+                        <i class="fa-solid fa-gamepad md:ml-2 block md:inline mb-1 md:mb-0"></i> تطوير الألعاب
                     </button>
                 </div>
 
                 <!-- Tabs Content -->
                 <div class="p-6 md:p-8">
-                    
                     <!-- Tab: Software Engineering -->
                     <div id="tab-se" class="tab-content active">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -361,7 +299,6 @@
         </div>
     </section>
 
-    <!-- Suggestions Section -->
     <section id="suggestions" class="py-20 bg-blue-50/50">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -373,7 +310,6 @@
             </div>
             
             <div class="bg-white rounded-3xl shadow-xl p-6 md:p-8 border border-gray-100 relative overflow-hidden">
-                <!-- Decorative background elements -->
                 <div class="absolute -top-24 -left-24 w-48 h-48 bg-primary/5 rounded-full blur-2xl"></div>
                 <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-secondary/5 rounded-full blur-2xl"></div>
 
@@ -401,217 +337,127 @@
         </div>
     </section>
 
+    <!-- Footer Updated: Cleaned links, added copyright -->
     <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-primary text-2xl"></i>
-                    <span class="font-extrabold text-2xl text-white tracking-wide">مَسار</span>
+            <div class="flex flex-col items-center justify-center gap-4 text-center">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-3xl"></i>
+                    <span class="font-extrabold text-3xl text-white tracking-wide">مَسار</span>
                 </div>
-                <p class="text-sm text-gray-400 text-center md:text-right">
-                    © 2024 منصة مسار. تم التطوير كنموذج أولي لمسابقة برمجية. (بانتظار الربط بـ Firebase).
+                <p class="text-gray-400 text-lg">
+                    جميع الحقوق محفوظة لمنصة مسار © 2024
                 </p>
-                <div class="flex gap-4">
-                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition text-white">
-                        <i class="fa-brands fa-github"></i>
-                    </a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition text-white">
-                        <i class="fa-brands fa-linkedin-in"></i>
-                    </a>
-                </div>
+                <p class="text-sm text-gray-500">
+                    تم التطوير كنموذج أولي لمسابقة برمجية. (بانتظار الربط النهائي).
+                </p>
             </div>
         </div>
     </footer>
 
-    <!-- Roadmap Modal Backdrop -->
-    <div id="roadmap-modal" class="fixed inset-0 z-50 hidden">
-        <!-- Background Overlay -->
-        <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+    
+    <!-- Custom Alert/Message Box (Replaces default alerts) -->
+    <div id="custom-msg-box" class="fixed inset-0 z-50 hidden flex-items-center justify-center p-4">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity" onclick="closeCustomMsg()"></div>
         
-        <!-- Modal Content -->
-        <div class="absolute inset-0 flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative transform transition-all scale-100 opacity-100">
-                
-                <!-- Header -->
-                <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50 rounded-t-2xl">
-                    <h3 id="modal-title" class="text-2xl font-bold text-dark">عنوان المسار</h3>
-                    <button onclick="closeModal()" class="text-gray-400 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
-                        <i class="fa-solid fa-xmark text-xl"></i>
-                    </button>
-                </div>
-
-                <!-- Body (Scrollable) -->
-                <div class="p-6 overflow-y-auto custom-scrollbar">
-                    
-                    <!-- Intro & Concept -->
-                    <div class="mb-8 bg-indigo-50/50 p-6 rounded-xl border border-indigo-100">
-                        <h4 class="text-lg font-bold text-primary mb-2 flex items-center gap-2">
-                            <i class="fa-solid fa-circle-info"></i> ما هو هذا المجال؟
-                        </h4>
-                        <p id="modal-concept" class="text-gray-700 leading-relaxed text-sm md:text-base">
-                            شرح المفهوم الأساسي للمجال.
-                        </p>
-                    </div>
-
-                    <h4 class="text-xl font-bold text-dark mb-6 flex items-center gap-2 border-b pb-2">
-                        <i class="fa-solid fa-shoe-prints text-secondary"></i> خريطة الطريق (الخطوات)
-                    </h4>
-                    
-                    <!-- Timeline Container -->
-                    <div id="modal-timeline" class="timeline-container">
-                        <!-- Steps will be injected here via JS -->
-                    </div>
-
-                </div>
-                
-                <!-- Footer -->
-                <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex justify-end">
-                    <button onclick="closeModal()" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium transition">
-                        إغلاق
-                    </button>
-                </div>
+        <!-- Box Content -->
+        <div class="bg-white rounded-2xl p-8 shadow-2xl relative z-10 w-full max-w-md text-center transform scale-95 opacity-0 transition-all duration-300 mx-auto mt-32" id="custom-msg-content">
+            
+            <div id="msg-icon-container" class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-blue-100">
+                <i id="msg-icon" class="fa-solid fa-info text-4xl text-primary"></i>
             </div>
+            
+            <h3 id="msg-title" class="text-2xl font-bold text-dark mb-3">العنوان</h3>
+            <p id="msg-body" class="text-gray-600 mb-8 text-lg">الرسالة تظهر هنا.</p>
+            
+            <button onclick="closeCustomMsg()" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-blue-500/30">
+                حسناً، فهمت
+            </button>
         </div>
     </div>
 
     <script>
-        /**
-         * Structure representing future Firebase Database Collections.
-         * For now, this is static JSON in memory.
-         * Later, you can easily replace `fetchRoadmaps()` to read from Firestore.
-         */
+        // Database mock
         const databaseMock = {
             roadmaps: [
-                {
-                    id: "se-backend",
-                    title: "هندسة البرمجيات وتطوير النظم",
-                    icon: "fa-server",
-                    color: "text-blue-600",
-                    bgColor: "bg-blue-50",
-                    shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات لضمان عمل التطبيقات بكفاءة وأمان.",
-                    concept: "تطوير النظم الخلفية (Backend) وهندسة البرمجيات هو العقل المدبر لأي تطبيق. يتضمن بناء الخوادم، تصميم قواعد البيانات، كتابة كود قابل للتوسع باستخدام مبادئ (OOP)، وتأمين العمليات المنطقية الخاصة بالنظام.",
-                    steps: [
-                        { title: "البرمجة الشيئية (OOP)", desc: "تعلم المفاهيم الأساسية (التغليف، الوراثة، تعدد الأشكال) لبناء كود نظيف وقابل لإعادة الاستخدام." },
-                        { title: "هياكل البيانات والخوارزميات", desc: "كيفية تخزين البيانات بكفاءة والبحث فيها وتعديلها بأسرع وقت ممكن." },
-                        { title: "قواعد البيانات (SQL & NoSQL)", desc: "تصميم الجداول، العلاقات، وكتابة استعلامات سريعة لاستخراج البيانات المطلوبة." },
-                        { title: "إطارات العمل (Backend Frameworks)", desc: "استخدام أدوات مثل Node.js, Spring Boot, أو Django لتسريع عملية البناء وتوفير الحماية." },
-                        { title: "نظم التشغيل وهندسة النظم", desc: "فهم الذاكرة، الجدولة، وكيفية نشر التطبيق على خوادم حقيقية (Deployment & Docker)." }
-                    ]
-                },
-                {
-                    id: "ai-ml",
-                    title: "الذكاء الاصطناعي وتعلم الآلة",
-                    icon: "fa-brain",
-                    color: "text-teal-600",
-                    bgColor: "bg-teal-50",
-                    shortDesc: "تدريب النماذج والخوارزميات لجعل الآلة قادرة على التنبؤ واتخاذ القرارات.",
-                    concept: "مجال الذكاء الاصطناعي يركز على بناء أنظمة قادرة على محاكاة الذكاء البشري. يعتمد بقوة على الرياضيات، تحليل البيانات، وتدريب الشبكات العصبية للتعرف على الأنماط.",
-                    steps: [
-                        { title: "الأساسيات الرياضية", desc: "إتقان الجبر الخطي، التفاضل، والإحصاء التطبيقي (الاحتمالات)." },
-                        { title: "لغة Python والمكتبات", desc: "تعلم بايثون ومكتبات التعامل مع البيانات مثل Pandas و NumPy." },
-                        { title: "تعلم الآلة (Machine Learning)", desc: "خوارزميات التصنيف والتنبؤ التقليدية (Decision Trees, SVM)." },
-                        { title: "الشبكات العصبية (Deep Learning)", desc: "بناء شبكات عصبية اصطناعية وتدريبها على الصور أو النصوص." },
-                        { title: "الخوارزميات المتقدمة", desc: "استخدام تقنيات البحث الشجري وتحسين النماذج (Optimization)." }
-                    ]
-                },
-                {
-                    id: "cybersecurity",
-                    title: "الأمن السيبراني",
-                    icon: "fa-shield-halved",
-                    color: "text-slate-700",
-                    bgColor: "bg-slate-100",
-                    shortDesc: "حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية والاختراقات.",
-                    concept: "الأمن السيبراني هو ممارسة حماية الأنظمة الحساسة والمعلومات من الهجمات الرقمية. يتطلب فهماً عميقاً للشبكات، أنظمة التشغيل، وعلم التشفير.",
-                    steps: [
-                        { title: "أساسيات الشبكات", desc: "فهم بروتوكولات الإنترنت (TCP/IP, HTTP/S) وكيفية تواصل الأجهزة." },
-                        { title: "أنظمة التشغيل المتقدمة", desc: "إتقان التعامل مع أنظمة Linux و Windows من سطر الأوامر." },
-                        { title: "أمن الحاسب والتشفير", desc: "تعلم الرياضيات المتقطعة، البوابات المنطقية، وخوارزميات التشفير وفك الشفرة." },
-                        { title: "اكتشاف الثغرات (Pen Testing)", desc: "البحث عن نقاط الضعف في التطبيقات وطرق ترقيعها." },
-                        { title: "الاستجابة للحوادث", desc: "كيفية تتبع الاختراقات وبناء أنظمة دفاعية قوية لحماية الخوادم." }
-                    ]
-                },
-                {
-                    id: "gamedev",
-                    title: "الرسوميات وتطوير الألعاب",
-                    icon: "fa-gamepad",
-                    color: "text-purple-600",
-                    bgColor: "bg-purple-50",
-                    shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم افتراضية وتفاعلية.",
-                    concept: "تطوير الألعاب والرسوميات الحاسوبية يعتمد على تحويل الأرقام والمعادلات إلى صور وعوالم ثلاثية الأبعاد تفاعلية تعتمد على الفيزياء والرياضيات.",
-                    steps: [
-                        { title: "أساسيات البرمجة", desc: "إتقان لغات مثل C++ أو C# وهي اللغات الأكثر استخداماً في محركات الألعاب." },
-                        { title: "الرسم بالحاسب (Computer Graphics)", desc: "فهم التحويلات ثلاثية الأبعاد (3D Transformations)، والإضاءة، ورسم الأشكال." },
-                        { title: "الرياضيات والفيزياء", desc: "تطبيق قوانين الحركة، الاصطدام، والمقذوفات داخل بيئة برمجية." },
-                        { title: "محركات الألعاب", desc: "استخدام أدوات قوية مثل Unity أو Unreal Engine لبناء اللعبة." },
-                        { title: "تصميم أنماط اللعب", desc: "ربط واجهة المستخدم، المؤثرات الصوتية، والمنطق البرمجي لخلق تجربة ممتعة." }
-                    ]
-                }
+                { id: "se-backend", title: "هندسة البرمجيات", icon: "fa-server", shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات." },
+                { id: "ai-ml", title: "الذكاء الاصطناعي", icon: "fa-brain", shortDesc: "تدريب النماذج والخوارزميات لاتخاذ القرارات." },
+                { id: "cybersecurity", title: "الأمن السيبراني", icon: "fa-shield-halved", shortDesc: "حماية الأنظمة والشبكات والبرامج من الاختراقات." },
+                { id: "gamedev", title: "تطوير الألعاب", icon: "fa-gamepad", shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم تفاعلية." }
             ]
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             renderRoadmapsCards();
+            setupMobileMenu();
         });
 
-        function openTab(tabId, btnElement) {
-            // Hide all tab contents
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(content => {
-                content.classList.remove('active');
+        // Mobile Menu Logic
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            const links = document.querySelectorAll('.mobile-link');
+
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
             });
 
-            // Remove active class from all buttons
+            // Close menu when clicking a link
+            links.forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                });
+            });
+        }
+
+        // Tabs Logic
+        function openTab(tabId, btnElement) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
             const btns = document.querySelectorAll('.tab-btn');
             btns.forEach(btn => {
                 btn.classList.remove('active');
                 btn.classList.remove('bg-blue-50');
             });
 
-            // Show selected tab content
             document.getElementById(tabId).classList.add('active');
-
-            // Add active class to clicked button
             btnElement.classList.add('active');
             btnElement.classList.add('bg-blue-50');
         }
 
+        // Render Locked Roadmaps Cards
         function renderRoadmapsCards() {
             const container = document.getElementById('roadmaps-grid');
-            container.innerHTML = ''; // Clear container
-
-            // Mapping for card gradients based on ID
-            const styleMap = {
-                "se-backend": { grad: "from-blue-500 to-cyan-400" },
-                "ai-ml": { grad: "from-teal-500 to-emerald-400" },
-                "cybersecurity": { grad: "from-slate-700 to-gray-500" },
-                "gamedev": { grad: "from-purple-600 to-pink-500" }
-            };
+            container.innerHTML = ''; 
 
             databaseMock.roadmaps.forEach(roadmap => {
-                const styles = styleMap[roadmap.id];
                 const cardHTML = `
-                    <div class="bg-white rounded-2xl shadow-md border border-gray-100 card-hover cursor-pointer group flex flex-col h-full overflow-hidden" 
-                         onclick="openModal('${roadmap.id}')">
-                        <!-- Card Icon Header -->
-                        <div class="h-48 w-full relative bg-gradient-to-br ${styles.grad} flex items-center justify-center overflow-hidden">
-                            <!-- Background FA Icon -->
-                            <i class="fa-solid ${roadmap.icon} text-9xl text-white opacity-10 absolute -right-4 -bottom-4 transform group-hover:scale-125 transition-transform duration-500"></i>
-                            <!-- Main Icon -->
-                            <div class="w-20 h-20 bg-white/20 backdrop-blur-sm border border-white/40 rounded-full flex items-center justify-center text-4xl text-white z-10 transform group-hover:scale-110 transition-transform duration-500 shadow-lg">
+                    <div class="bg-white rounded-2xl shadow-md border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative" 
+                         onclick="showUnderDevelopmentMsg()">
+                        
+                        <!-- Dark Overlay for Locked State -->
+                        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
+                            <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-lock text-3xl text-white"></i>
+                            </div>
+                            <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
+                        </div>
+
+                        <!-- Card Content (Visually Dimmed beneath overlay) -->
+                        <div class="h-48 w-full relative bg-gray-200 flex items-center justify-center overflow-hidden">
+                            <i class="fa-solid ${roadmap.icon} text-9xl text-gray-300 absolute -right-4 -bottom-4"></i>
+                            <div class="w-20 h-20 bg-white/50 border border-white/40 rounded-full flex items-center justify-center text-4xl text-gray-500 z-10">
                                 <i class="fa-solid ${roadmap.icon}"></i>
                             </div>
                         </div>
                         
-                        <!-- Card Content -->
                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold text-dark mb-3 group-hover:text-primary transition-colors">${roadmap.title}</h3>
-                            <p class="text-gray-600 mb-6 flex-grow text-sm leading-relaxed">
+                            <h3 class="text-xl font-bold text-gray-400 mb-3">${roadmap.title}</h3>
+                            <p class="text-gray-400 mb-6 flex-grow text-sm leading-relaxed">
                                 ${roadmap.shortDesc}
                             </p>
-                            <div class="flex items-center text-primary font-bold text-sm mt-auto group-hover:gap-2 transition-all gap-1">
-                                <span>عرض خريطة الطريق</span>
-                                <i class="fa-solid fa-arrow-left mt-1"></i>
-                            </div>
                         </div>
                     </div>
                 `;
@@ -619,19 +465,74 @@
             });
         }
 
-        // Suggestions Logic
+        // Custom Message Box Logic (Replacing window.alert)
+        function showCustomMsg(title, body, iconClass, iconBg, iconColor) {
+            const box = document.getElementById('custom-msg-box');
+            const content = document.getElementById('custom-msg-content');
+            
+            document.getElementById('msg-title').textContent = title;
+            document.getElementById('msg-body').textContent = body;
+            
+            const iconContainer = document.getElementById('msg-icon-container');
+            const icon = document.getElementById('msg-icon');
+            
+            iconContainer.className = `w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ${iconBg}`;
+            icon.className = `fa-solid ${iconClass} text-4xl ${iconColor}`;
+
+            box.classList.remove('hidden');
+            box.classList.add('flex');
+            
+            setTimeout(() => {
+                content.classList.add('scale-100', 'opacity-100');
+                content.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCustomMsg() {
+            const box = document.getElementById('custom-msg-box');
+            const content = document.getElementById('custom-msg-content');
+            
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            
+            setTimeout(() => {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        // Specific Message Triggers
+        function showUnderDevelopmentMsg() {
+            showCustomMsg(
+                "نحن نعمل على ذلك!",
+                "عذراً، هذا المسار التعليمي لا يزال قيد التطوير والإنشاء. نعدك بإتاحته في أقرب وقت لتقديم أفضل تجربة تعليمية لك.",
+                "fa-person-digging",
+                "bg-orange-100",
+                "text-orange-500"
+            );
+        }
+
+        // Suggestions Logic Updated to use Custom Msg
         function submitSuggestion() {
             const btn = document.querySelector('#suggestions button[type="submit"]');
             const originalText = btn.innerHTML;
             
-            // Loading State
             btn.innerHTML = '<span>جاري الإرسال...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             btn.classList.remove('hover:-translate-y-1');
             
-            // Mock API Call delay
             setTimeout(() => {
-                alert('شكرًا لك! تم استلام اقتراحك بنجاح، وسيتم مراجعته في أقرب وقت.');
+                // Show beautiful success message instead of alert
+                showCustomMsg(
+                    "شكراً جزيلاً لك!",
+                    "تم استلام اقتراحك بنجاح. فريقنا سيقوم بمراجعته قريباً، رأيك يساعدنا دائماً على التطور.",
+                    "fa-circle-check",
+                    "bg-green-100",
+                    "text-green-500"
+                );
                 
                 // Clear Form
                 document.getElementById('sugg-message').value = '';
@@ -644,69 +545,6 @@
                 btn.classList.add('hover:-translate-y-1');
             }, 1200);
         }
-
-        // Roadmap Modal Logic
-        const modal = document.getElementById('roadmap-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalConcept = document.getElementById('modal-concept');
-        const modalTimeline = document.getElementById('modal-timeline');
-
-        function openModal(roadmapId) {
-            // Find data in our "mock database"
-            const data = databaseMock.roadmaps.find(r => r.id === roadmapId);
-            if (!data) return;
-
-            // Populate text
-            modalTitle.textContent = data.title;
-            modalConcept.textContent = data.concept;
-
-            // Build Timeline Steps
-            modalTimeline.innerHTML = '';
-            data.steps.forEach((step, index) => {
-                const stepHTML = `
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="bg-gray-50 border border-gray-100 p-4 rounded-xl shadow-sm ml-2">
-                            <h5 class="font-bold text-primary mb-1 flex items-center gap-2">
-                                <span class="bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">${index + 1}</span>
-                                ${step.title}
-                            </h5>
-                            <p class="text-sm text-gray-600 pr-7 leading-relaxed">${step.desc}</p>
-                        </div>
-                    </div>
-                `;
-                modalTimeline.insertAdjacentHTML('beforeend', stepHTML);
-            });
-
-            // Show modal
-            modal.classList.remove('hidden');
-            // Slight delay for animation
-            setTimeout(() => {
-                modal.firstElementChild.nextElementSibling.classList.add('scale-100', 'opacity-100');
-                modal.firstElementChild.nextElementSibling.classList.remove('scale-95', 'opacity-0');
-            }, 10);
-            
-            // Prevent body scrolling
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            // Hide modal animations
-            modal.firstElementChild.nextElementSibling.classList.remove('scale-100', 'opacity-100');
-            modal.firstElementChild.nextElementSibling.classList.add('scale-95', 'opacity-0');
-            
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                document.body.style.overflow = 'auto'; // Restore scrolling
-            }, 200);
-        }
-
-        // Close modal on Escape key press
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                if (!modal.classList.contains('hidden')) closeModal();
-            }
-        });
     </script>
 </body>
 </html>

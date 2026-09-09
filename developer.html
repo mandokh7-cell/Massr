@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة مسار | عن المطورين</title>
+    <title>مسار تطوير المواقع الشامل | منصة مسار</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
@@ -21,17 +21,6 @@
                         primary: '#2563EB', // Modern Blue
                         secondary: '#0D9488', // Teal
                         dark: '#0F172A', // Slate 900
-                    },
-                    animation: {
-                        'blob': 'blob 7s infinite',
-                    },
-                    keyframes: {
-                        blob: {
-                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
-                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
-                        }
                     }
                 }
             }
@@ -45,27 +34,60 @@
             scroll-behavior: smooth;
         }
 
+        /* شريط التمرير */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
-        .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        /* هندسة الخط الزمني لتكون مريحة جداً على الهاتف */
+        .timeline-container {
+            position: relative;
+            padding-bottom: 4rem;
+        }
+        
+        /* الخط المركزي */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 44px; /* محسوبة بدقة لتتوسط الأيقونة على الهاتف */
+            width: 4px;
+            background: linear-gradient(to bottom, #DBEAFE, #93C5FD, #C4B5FD, #FBCFE8, #D1FAE5, #99F6E4);
+            border-radius: 4px;
+            z-index: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .timeline-container::before {
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+
+        /* تنظيف العوامات (Clearfix) لترتيب الكروت المتبادلة */
+        .clear-both { clear: both; }
+
+        /* تأثيرات الكروت */
+        .timeline-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timeline-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
 
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-40">
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
                     <a href="index.html" class="flex items-center gap-2">
-                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold hover:rotate-12 transition-transform">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </div>
                         <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
@@ -75,7 +97,9 @@
                 <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8 space-x-reverse">
                     <a href="index.html" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
-                    <a href="roadmap.html" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
+                    <a href="roadmap.html" class="text-primary font-bold transition">المسارات التقنية</a>
+                    <a href="index.html#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
+                    <a href="developer.html" class="text-gray-600 hover:text-primary font-medium transition">المطورين</a>
                 </div>
 
                 <!-- Mobile Hamburger Button -->
@@ -91,7 +115,8 @@
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
             <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
                 <a href="index.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
-                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">المسارات التقنية</a>
+                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-primary bg-blue-50 transition">المسارات التقنية</a>
+                <a href="index.html#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
                 <a href="developer.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-secondary bg-teal-50 hover:bg-teal-100 transition border border-teal-100 mt-2">
                     <i class="fa-solid fa-code mr-2"></i> المطورين
                 </a>
@@ -99,121 +124,540 @@
         </div>
     </nav>
 
-    <main class="min-h-screen relative pt-12 pb-24 overflow-hidden">
-        <!-- Animated Background Blobs -->
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-teal-300 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-blob animation-delay-4000"></div>
-
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            
-            <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-dark mb-4">فريق التطوير</h1>
-                <p class="text-gray-500 text-lg">تعرف على العقول التي تقف خلف بناء منصة مسار.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
-                <!-- Profile Card: Mohamed Khalid -->
-                <div class="glass-card rounded-[2.5rem] p-8 shadow-xl relative overflow-hidden flex flex-col h-full hover:shadow-2xl transition-shadow duration-300">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full"></div>
-                    
-                    <div class="flex flex-col items-center flex-grow">
-                        <!-- Avatar/Icon Area -->
-                        <div class="relative group mb-6">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-primary to-blue-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-500"></div>
-                            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border-4 border-white shadow-xl flex items-center justify-center overflow-hidden">
-                                <img src="mohamed.jpg" alt="Mohamed Khalid" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-solid fa-user text-5xl text-gray-300\'></i>'">
-                            </div>
-                            <div class="absolute bottom-1 right-1 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-100 text-primary">
-                                <i class="fa-solid fa-code"></i>
-                            </div>
-                        </div>
-
-                        <!-- Info Area -->
-                        <div class="text-center flex-grow flex flex-col w-full">
-                            <span class="inline-block mx-auto py-1 px-3 rounded-full bg-blue-50 text-primary font-bold tracking-wider text-xs mb-3 border border-blue-100">Full Stack Developer</span>
-                            <h2 class="text-2xl md:text-3xl font-extrabold text-dark mb-2" dir="ltr">Mohamed Khalid</h2>
-                            
-                            <p class="text-gray-600 leading-relaxed mb-8 mt-4 text-sm md:text-base flex-grow">
-                                مطور ويب متكامل (Full Stack)، مهتم ببناء حلول برمجية متكاملة من الواجهات الأمامية التفاعلية إلى الأنظمة الخلفية القوية لدعم أهداف منصة مسار.
-                            </p>
-
-                            <!-- Social Links -->
-                            <div class="flex flex-wrap justify-center gap-4 mt-auto">
-                                <a href="https://al-zain.site" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="Website">
-                                    <i class="fa-solid fa-globe"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/in/mohamed-khald-al-zain-09998b331?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-[#0A66C2] hover:text-white hover:border-[#0A66C2] transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="LinkedIn">
-                                    <i class="fa-brands fa-linkedin-in"></i>
-                                </a>
-                                <a href="tel:+201204971416" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="Phone" dir="ltr">
-                                    <i class="fa-solid fa-phone"></i>
-                                </a>
-                                 <a href="https://wa.me/201204971416" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="WhatsApp">
-                                    <i class="fa-brands fa-whatsapp"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Profile Card: Mohamed Attia -->
-                <div class="glass-card rounded-[2.5rem] p-8 shadow-xl relative overflow-hidden flex flex-col h-full hover:shadow-2xl transition-shadow duration-300">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-secondary/20 to-transparent rounded-bl-full"></div>
-                    
-                    <div class="flex flex-col items-center flex-grow">
-                        <!-- Avatar/Icon Area -->
-                        <div class="relative group mb-6">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-secondary to-teal-400 rounded-full blur opacity-50 group-hover:opacity-75 transition duration-500"></div>
-                            <div class="relative w-32 h-32 md:w-40 md:h-40 rounded-full bg-white border-4 border-white shadow-xl flex items-center justify-center overflow-hidden">
-                                <img src="mo.jpg" alt="Mohamed Attia" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fa-solid fa-user text-5xl text-gray-300\'></i>'">
-                            </div>
-                            <div class="absolute bottom-1 right-1 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-100 text-secondary">
-                                <i class="fa-solid fa-server"></i>
-                            </div>
-                        </div>
-
-                        <!-- Info Area -->
-                        <div class="text-center flex-grow flex flex-col w-full">
-                            <span class="inline-block mx-auto py-1 px-3 rounded-full bg-teal-50 text-secondary font-bold tracking-wider text-xs mb-3 border border-teal-100">Backend Developer</span>
-                            <h2 class="text-2xl md:text-3xl font-extrabold text-dark mb-2" dir="ltr">Mohamed Attia</h2>
-                            
-                            <p class="text-gray-600 leading-relaxed mb-8 mt-4 text-sm md:text-base flex-grow">
-                                مطور نظم خلفية (Backend)، متخصص في تصميم قواعد البيانات وبناء واجهات برمجة التطبيقات (APIs) لضمان أداء مستقر وسريع للمنصة.
-                            </p>
-
-                            <!-- Social Links -->
-                            <div class="flex flex-wrap justify-center gap-4 mt-auto">
-                                <a href="https://github.com/Mohamedb12" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-[#181717] hover:text-white hover:border-[#181717] transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="GitHub">
-                                    <i class="fa-brands fa-github"></i>
-                                </a>
-                                <a href="https://www.facebook.com/share/1CTptxFFEK/" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-[#1877F2] hover:text-white hover:border-[#1877F2] transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="Facebook">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                </a>
-                                <a href="tel:+201034388469" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="Phone" dir="ltr">
-                                    <i class="fa-solid fa-phone"></i>
-                                </a>
-                                <a href="https://wa.me/201034388469" target="_blank" class="w-12 h-12 rounded-2xl bg-white border border-gray-200 flex items-center justify-center text-xl text-gray-700 hover:bg-[#25D366] hover:text-white hover:border-[#25D366] transition-all shadow-sm hover:shadow-md transform hover:-translate-y-1" title="WhatsApp">
-                                    <i class="fa-brands fa-whatsapp"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            
-            <div class="text-center mt-12">
-                 <a href="index.html" class="inline-flex items-center gap-2 text-gray-500 hover:text-primary font-medium transition">
-                    العودة للرئيسية <i class="fa-solid fa-arrow-left text-sm"></i>
+    <!-- Header Section -->
+    <header class="bg-white py-16 md:py-24 border-b border-gray-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-blue-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-50 rounded-full blur-3xl opacity-60 translate-y-1/2 -translate-x-1/4"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex items-center gap-4 mb-8">
+                <a href="roadmap.html" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors border border-gray-200 hover:border-primary">
+                    <i class="fa-solid fa-arrow-right"></i>
                 </a>
+                <span class="text-sm font-bold text-primary bg-blue-50 px-4 py-2 rounded-full uppercase tracking-wider border border-blue-100">Full Stack Web Development</span>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-10 items-start lg:items-center">
+                <div class="w-28 h-28 md:w-40 md:h-40 bg-gradient-to-br from-blue-50 to-blue-100 rounded-[2rem] border border-blue-200 flex items-center justify-center text-6xl md:text-7xl text-primary shadow-xl shadow-blue-500/10 flex-shrink-0 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl md:text-6xl font-black text-dark mb-6 leading-tight">الدليل الشامل لتطوير المواقع</h1>
+                    <p class="text-gray-600 text-lg md:text-xl max-w-4xl leading-relaxed">
+                        برمجة وتطوير المواقع هو فن هندسة الإنترنت. في هذا المسار التفصيلي، سنأخذك في رحلة عميقة من الصفر المطلق، بدايةً من فهم بنية الشبكات، مروراً بصناعة واجهات مستخدم معقدة تفاعلية، وصولاً إلى بناء قواعد بيانات ضخمة وتأمين الخوادم لتصبح مطور ويب متكامل بدرجة خبير.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Domains Overview -->
+    <section class="py-16 bg-gray-50 border-b border-gray-100 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">أقسام مجال الويب الرئيسية</h2>
+                <p class="text-gray-500 text-lg">يتكون أي تطبيق ويب حديث من ثلاثة أضلاع أساسية يجب فهم دور كل منها.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Frontend -->
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:border-orange-200 transition-colors group">
+                    <div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center text-3xl text-orange-500 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-desktop"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-3">الواجهات الأمامية <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Frontend</span></h3>
+                    <p class="text-gray-600 text-base leading-relaxed mb-6">
+                        كل ما يراه المستخدم ويتفاعل معه في المتصفح. يركز على تجربة المستخدم (UX)، تصميم الواجهات (UI)، واستجابة الموقع لجميع أحجام الشاشات والأجهزة.
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">HTML/CSS</span>
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">JavaScript</span>
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">React/Vue</span>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:border-green-200 transition-colors group">
+                    <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-3xl text-green-500 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-3">النظم الخلفية <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Backend</span></h3>
+                    <p class="text-gray-600 text-base leading-relaxed mb-6">
+                        العقل المدبر الكامن خلف الكواليس. يتعامل مع الخوادم (Servers)، معالجة البيانات، حماية الموقع، وتصميم واجهات برمجة التطبيقات (APIs).
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">Node/Python</span>
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">Databases</span>
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">APIs & Security</span>
+                    </div>
+                </div>
+
+                <!-- Full Stack -->
+                <div class="bg-dark p-8 rounded-[2rem] shadow-xl relative overflow-hidden group">
+                    <div class="absolute -right-10 -top-10 text-9xl text-white opacity-5"><i class="fa-solid fa-layer-group"></i></div>
+                    <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl text-purple-400 mb-6 relative z-10 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">المطور المتكامل <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Full Stack</span></h3>
+                    <p class="text-gray-300 text-base leading-relaxed mb-6 relative z-10">
+                        مطور يمتلك مهارات الواجهات الأمامية والخلفية معاً. قادر على تصميم بنية التطبيق كاملاً، وربط قواعد البيانات بواجهات المستخدم لإنتاج موقع جاهز.
+                    </p>
+                    <div class="flex flex-wrap gap-2 relative z-10">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-300">MERN Stack</span>
+                        <span class="text-xs font-bold px-3 py-1.5 bg-blue-500/20 border border-blue-500/30 rounded-lg text-blue-300">System Design</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mega Timeline Section -->
+    <main class="py-20 md:py-32 relative overflow-hidden bg-white">
+        <!-- Background Elements -->
+        <div class="absolute top-40 left-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-[100px] opacity-50 pointer-events-none"></div>
+        <div class="absolute bottom-40 right-0 w-[500px] h-[500px] bg-teal-50 rounded-full blur-[100px] opacity-50 pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-24">
+                <span class="bg-dark text-white px-5 py-2 rounded-full text-sm font-bold tracking-widest shadow-md inline-block mb-6">خريطة الطريق التفصيلية</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-dark mb-6 leading-tight">الرحلة من الصفر إلى الاحتراف</h2>
+                <p class="text-gray-500 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed">هذا المسار مرتب منطقياً وبشكل دقيق جداً. يحتوي كل قسم على المفاهيم العميقة التي تميز المبرمج المحترف عن الهاوي.</p>
             </div>
 
+            <!-- The Timeline Core -->
+            <div class="timeline-container relative w-full">
+                
+                <!-- ================== STEP 1: Internet Fundamentals ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <!-- Icon -->
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-gray-400 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 group-hover:border-primary transition-all duration-300">
+                        <i class="fa-solid fa-globe text-gray-500 group-hover:text-primary text-2xl transition-colors"></i>
+                    </div>
+
+                    <!-- Card (Odd -> Right on Desktop, Floats Right) -->
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-gray-400">
+                            <!-- Arrow -->
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-gray-400 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الأولى</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">أساسيات الإنترنت والويب</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">المبرمج الجيد يجب أن يفهم البيئة التي يعمل فيها تطبيقه قبل أن يكتب سطراً واحداً من الكود.</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-server text-gray-400"></i> بنية الإنترنت (How it works)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">الفرق بين الخادم (Server) والعميل (Client)، وكيف تسافر حزم البيانات عبر المحيطات.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-network-wired text-gray-400"></i> بروتوكولات ونطاقات (DNS & HTTP)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">كيف يتم تحويل اسم الموقع إلى رقم IP؟ ما هي طرق الطلب (GET, POST) في بروتوكول HTTP؟</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-brands fa-chrome text-gray-400"></i> محركات المتصفحات (Browsers)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">فهم كيفية قيام المتصفح بتحليل الكود وتحويله إلى شجرة عناصر (DOM) ليعرضها للمستخدم.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 2: HTML & CSS Mastery ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <!-- Icon -->
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-orange-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-brands fa-html5 text-orange-500 text-2xl"></i>
+                    </div>
+
+                    <!-- Card (Even -> Left on Desktop, Floats Left) -->
+                    <!-- RTL Note: float-left means physical left on screen. On mobile we just use right padding to avoid icon. -->
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-orange-500">
+                            <!-- Arrow (Always points right on both mobile and desktop for Left cards) -->
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-orange-500 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الثانية</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">الاحتراف في HTML5 & CSS3</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">هنا يبدأ العمل الحقيقي. HTML تبني الهيكل العظمي للموقع، بينما CSS تكسوه وتجعله ينبض بالحياة والألوان.</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-orange-50/40 p-4 rounded-2xl border border-orange-100">
+                                    <h4 class="font-bold text-orange-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-code text-orange-500"></i> Semantic HTML & SEO</h4>
+                                    <p class="text-sm text-gray-700 leading-relaxed">كتابة كود ذو دلالة ومعنى (مثل &lt;header&gt; و &lt;article&gt;) لتحسين ظهور الموقع في محركات البحث وتسهيل قراءته لذوي الهمم (Accessibility).</p>
+                                </div>
+                                <div class="bg-blue-50/40 p-4 rounded-2xl border border-blue-100">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-brands fa-css3-alt text-blue-500"></i> تخطيط متقدم (Flexbox & Grid)</h4>
+                                    <p class="text-sm text-gray-700 leading-relaxed">الاستغناء تماماً عن الطرق القديمة، واحتراف بناء الهياكل المعقدة باستخدام أحدث أنظمة التخطيط في CSS.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-mobile-screen-button text-gray-500"></i> التصميم المتجاوب (Responsive)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">استخدام Media Queries لضمان عمل الموقع بشكل مثالي على شاشات الهواتف، الأجهزة اللوحية، والشاشات العملاقة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 3: Version Control ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-[#F05032] shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-brands fa-git-alt text-[#F05032] text-2xl"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-[#F05032]">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-[#F05032] text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الثالثة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">التحكم في الإصدارات (Git)</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">خطوة فاصلة تنقلك من برمجة الهواة لبيئة عمل الشركات. تعلم كيف تدير الكود الخاص بك دون خوف من ضياعه.</p>
+                            </div>
+                            
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 flex-shrink-0 mt-1"><i class="fa-solid fa-terminal"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-dark text-sm">سطر الأوامر (CLI)</h4>
+                                        <p class="text-sm text-gray-500 mt-1">كيفية التنقل بين الملفات وتنفيذ الأوامر باستخدام الشاشة السوداء بدلاً من الفأرة.</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-[#F05032]/10 flex items-center justify-center text-[#F05032] flex-shrink-0 mt-1"><i class="fa-solid fa-code-branch"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-dark text-sm">مفاهيم Git العميقة</h4>
+                                        <p class="text-sm text-gray-500 mt-1">التفرع (Branches)، حفظ التغييرات (Commits)، ودمج الأكواد مع فريق عمل وحل التعارضات (Conflicts).</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-start gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center text-white flex-shrink-0 mt-1"><i class="fa-brands fa-github"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-dark text-sm">GitHub & Open Source</h4>
+                                        <p class="text-sm text-gray-500 mt-1">رفع مشاريعك للعالم، بناء معرض أعمالك (Portfolio)، والمساهمة في المشاريع مفتوحة المصدر.</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 4: JavaScript ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-yellow-400 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-brands fa-js text-yellow-500 text-3xl"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-yellow-400">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-yellow-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الرابعة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">عصب الويب: JavaScript</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">اللغة الوحيدة التي يفهمها المتصفح. ستحول موقعك من مجرد جريدة ثابتة إلى تطبيق ذكي يتفاعل مع المستخدمين.</p>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-yellow-50/50 p-4 rounded-xl border border-yellow-100/50">
+                                    <h4 class="font-bold text-yellow-900 text-sm mb-2"><i class="fa-solid fa-cube text-yellow-600 ml-1"></i> الأساسيات والمنطق</h4>
+                                    <p class="text-xs text-gray-600 leading-relaxed">المتغيرات، الشروط، الحلقات، وأنواع البيانات المعقدة (المصفوفات والكائنات).</p>
+                                </div>
+                                <div class="bg-yellow-50/50 p-4 rounded-xl border border-yellow-100/50">
+                                    <h4 class="font-bold text-yellow-900 text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles text-yellow-600 ml-1"></i> تفاعل المتصفح (DOM)</h4>
+                                    <p class="text-xs text-gray-600 leading-relaxed">التحكم في عناصر HTML، التقاط الأحداث (Events) مثل النقر والكتابة وتغيير التصميم برمجياً.</p>
+                                </div>
+                                <div class="bg-yellow-50/50 p-4 rounded-xl border border-yellow-100/50 sm:col-span-2">
+                                    <h4 class="font-bold text-yellow-900 text-sm mb-2"><i class="fa-solid fa-bolt text-yellow-600 ml-1"></i> مفاهيم متقدمة (Advanced JS)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">البرمجة غير المتزامنة (Asynchronous)، جلب البيانات من الخوادم (Fetch API & Promises)، التحديثات الحديثة للغة (ES6+ Features)، وفهم كيفية عمل (Event Loop).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 5: React.js ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-blue-400 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-brands fa-react text-blue-500 text-3xl animate-[spin_10s_linear_infinite]"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-blue-400">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-blue-500 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الخامسة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">أطر عمل الواجهات (React.js)</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">بناء المواقع المعقدة بـ JS النقي أمر مرهق. المكتبات مثل <strong class="text-blue-600">React</strong> تسهل بناء تطبيقات الصفحة الواحدة (SPA) بسرعة كفاءة عالية.</p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100 hover:bg-blue-50 transition-colors">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                    <p class="text-sm font-bold text-gray-700">مكونات الويب (Components) وإعادة استخدام الكود.</p>
+                                </div>
+                                <div class="flex items-center gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100 hover:bg-blue-50 transition-colors">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                    <p class="text-sm font-bold text-gray-700">إدارة الحالة والبيانات (State, Props, Hooks).</p>
+                                </div>
+                                <div class="flex items-center gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100 hover:bg-blue-50 transition-colors">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                    <p class="text-sm font-bold text-gray-700">إدارة الحالة المعقدة (Context API أو Redux).</p>
+                                </div>
+                                <div class="flex items-center gap-3 bg-blue-50/50 p-4 rounded-xl border border-blue-100 hover:bg-blue-50 transition-colors">
+                                    <div class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
+                                    <p class="text-sm font-bold text-gray-700">التنقل بين الصفحات بدون تحميل (React Router).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 6: CSS Frameworks ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-teal-400 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-teal-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.035c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10-4.5-10-10-10zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zm4.5-11.5L12 12l-4.5-3.5L7.5 10 12 15l4.5-5-.5-1.5z"/></svg>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-teal-400">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-teal-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة السادسة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">أطر عمل التصميم (Tailwind CSS)</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">في بيئة العمل الحقيقية، نادراً ما نكتب CSS من الصفر. نستخدم أدوات تسرع عملية الإنتاج بشكل كبير جداً.</p>
+                            </div>
+                            
+                             <div class="flex flex-col sm:flex-row gap-4">
+                                <div class="flex-1 bg-teal-50/60 p-5 rounded-2xl border border-teal-100 text-center hover:bg-teal-100 transition-colors">
+                                    <h4 class="font-bold text-teal-900 text-lg mb-2">Tailwind CSS</h4>
+                                    <p class="text-sm text-gray-600">الأكثر طلباً حالياً في السوق. يعتمد على فئات جاهزة (Utility-first) لبناء أي تصميم دون مغادرة ملف HTML.</p>
+                                </div>
+                                <div class="flex-1 bg-purple-50/60 p-5 rounded-2xl border border-purple-100 text-center hover:bg-purple-100 transition-colors">
+                                    <h4 class="font-bold text-purple-900 text-lg mb-2">Bootstrap</h4>
+                                    <p class="text-sm text-gray-600">الخيار الكلاسيكي. يوفر مكونات جاهزة (Components) مثل الأزرار والقوائم لتركيبها سريعاً.</p>
+                                </div>
+                             </div>
+                             
+                             <div class="mt-6 text-center bg-gray-50 py-3 rounded-xl border border-dashed border-gray-300">
+                                <p class="text-sm font-bold text-gray-500">🎉 إتمامك لهذه الخطوات يجعلك (Frontend Developer) جاهز لسوق العمل!</p>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 7: Backend Basics ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-green-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-brands fa-node-js text-green-500 text-3xl"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-green-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-green-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة السابعة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">دخول عالم النظم الخلفية (Backend)</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">حان الوقت للانتقال خلف الكواليس. أسهل طريق لتعلم الباك-إند هو استخدام لغة JavaScript التي تعلمتها مسبقاً من خلال <strong class="text-green-700">Node.js</strong>.</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-5 rounded-2xl border border-gray-100 space-y-4">
+                                <div class="flex items-start gap-4">
+                                    <i class="fa-brands fa-node text-green-600 text-2xl mt-1 w-8 text-center"></i>
+                                    <div>
+                                        <h4 class="font-bold text-dark">بيئة Node.js</h4>
+                                        <p class="text-sm text-gray-500 mt-1">تسمح لك بتشغيل أكواد جافاسكريبت خارج المتصفح (على السيرفر).</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 border-t border-gray-200 pt-4">
+                                    <i class="fa-solid fa-server text-gray-600 text-xl mt-1 w-8 text-center"></i>
+                                    <div>
+                                        <h4 class="font-bold text-dark">إطار عمل Express.js</h4>
+                                        <p class="text-sm text-gray-500 mt-1">أداة قوية لتسهيل إنشاء السيرفرات واستقبال طلبات المستخدمين والتوجيه (Routing).</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4 border-t border-gray-200 pt-4">
+                                    <i class="fa-solid fa-network-wired text-blue-500 text-xl mt-1 w-8 text-center"></i>
+                                    <div>
+                                        <h4 class="font-bold text-dark">تصميم الـ APIs</h4>
+                                        <p class="text-sm text-gray-500 mt-1">كيف تبني واجهات برمجة (RESTful) لتكون حلقة الوصل بين قاعدة البيانات وواجهات المستخدم.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 8: Databases ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-blue-600 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-database text-blue-600 text-2xl"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-blue-600">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-blue-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الثامنة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">قواعد البيانات (Databases)</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">أين نضع بيانات المستخدمين، منشوراتهم، والمنتجات؟ يجب تعلم كيفية تصميم وهندسة البيانات بكفاءة لمنع البطء والتسريب.</p>
+                            </div>
+                            
+                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50/50 p-5 rounded-2xl border border-blue-100 flex flex-col h-full">
+                                    <h4 class="font-bold text-blue-900 mb-2 flex items-center gap-2"><i class="fa-solid fa-table text-blue-500"></i> Relational (SQL)</h4>
+                                    <p class="text-sm text-gray-600 mb-4 flex-grow">بيانات منظمة بصرامة في جداول مرتبطة بعلاقات (مثل الجداول في Excel).</p>
+                                    <div class="mt-auto flex gap-2">
+                                        <span class="text-[10px] font-bold bg-white px-2 py-1 rounded-md text-blue-700 shadow-sm border border-blue-100">PostgreSQL</span>
+                                        <span class="text-[10px] font-bold bg-white px-2 py-1 rounded-md text-blue-700 shadow-sm border border-blue-100">MySQL</span>
+                                    </div>
+                                </div>
+                                <div class="bg-green-50/50 p-5 rounded-2xl border border-green-100 flex flex-col h-full">
+                                    <h4 class="font-bold text-green-900 mb-2 flex items-center gap-2"><i class="fa-solid fa-file-code text-green-500"></i> NoSQL</h4>
+                                    <p class="text-sm text-gray-600 mb-4 flex-grow">قواعد بيانات مرنة جداً تعتمد على المستندات (تشبه ملفات JSON) وتناسب التطبيقات السريعة.</p>
+                                    <div class="mt-auto">
+                                        <span class="text-[10px] font-bold bg-white px-2 py-1 rounded-md text-green-700 shadow-sm border border-green-100">MongoDB</span>
+                                    </div>
+                                </div>
+                             </div>
+                             <div class="mt-4 bg-gray-50 p-3 rounded-xl text-center border border-gray-100">
+                                 <p class="text-xs font-bold text-gray-600"><i class="fa-solid fa-link text-gray-400 ml-1"></i> نصيحة: تعلم استخدام أدوات ORM مثل Mongoose أو Prisma لربط الكود بقاعدة البيانات بسهولة.</p>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+
+                <!-- ================== STEP 9: Auth & Deployment ================== -->
+                <div class="relative w-full mb-10 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-dark border-[5px] border-purple-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fa-solid fa-rocket text-white text-2xl"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-4 border-t-purple-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-purple-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة التاسعة والأخيرة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">الأمان، التوثيق، والنشر</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">اللمسات الاحترافية لتطبيقك. حمايته من الاختراق، بناء نظام تسجيل الدخول، ثم إطلاقه ليراه العالم كله.</p>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 flex-shrink-0 text-xl border border-purple-100"><i class="fa-solid fa-shield-halved"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-dark text-sm mb-1">الأمان والمصادقة (Auth & Security)</h4>
+                                        <p class="text-sm text-gray-500 leading-relaxed">تشفير كلمات المرور بـ (Bcrypt)، حماية الجلسات باستخدام (JWT)، وتأمين المسارات ضد هجمات (CORS, XSS).</p>
+                                    </div>
+                                </div>
+                                <div class="flex gap-4">
+                                    <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 flex-shrink-0 text-xl border border-blue-100"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                                    <div>
+                                        <h4 class="font-bold text-dark text-sm mb-1">الإطلاق والنشر (Deployment)</h4>
+                                        <p class="text-sm text-gray-500 leading-relaxed">رفع الواجهات على منصات مثل (Vercel) أو (Netlify). ورفع قواعد البيانات والخوادم على (Render) أو (AWS).</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                
+                <!-- End Marker -->
+                <div class="relative flex flex-col items-center justify-center mt-20 w-full z-10 clear-both pt-8">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-secondary shadow-2xl shadow-blue-500/40 flex flex-col items-center justify-center text-white ring-8 ring-white transform hover:scale-110 transition-transform duration-500 cursor-default">
+                        <i class="fa-solid fa-trophy text-4xl mb-1 drop-shadow-md"></i>
+                        <span class="text-[10px] font-black uppercase tracking-widest">Full Stack</span>
+                    </div>
+                    <div class="text-center mt-6">
+                        <p class="font-black text-dark text-2xl mb-2">أنت الآن مطور ويب متكامل!</p>
+                        <p class="text-gray-500 text-sm">رحلتك البرمجية تبدأ هنا، استمر في بناء المشاريع وتطوير مهاراتك.</p>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </main>
 
+    <!-- Resources Section -->
+    <section class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block p-4 rounded-full bg-blue-100 text-primary mb-6">
+                    <i class="fa-solid fa-book-open-reader text-3xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">أهم المصادر التعليمية المجانية</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">وفرنا لك أفضل المنصات والقنوات لتبدأ رحلتك التعليمية فوراً ودون دفع أي تكاليف.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Elzero -->
+                <a href="https://elzero.org/" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-[#10568F]/10 flex items-center justify-center text-[#10568F] text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-youtube"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">أكاديمية الزيرو (Elzero)</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">أعظم مرجع عربي على يوتيوب لتعلم كل تفاصيل برمجة الويب (Frontend & Backend) من الصفر حتى التطبيق العملي وبناء مشاريع ضخمة.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة القناة <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+
+                <!-- freeCodeCamp -->
+                <a href="https://www.freecodecamp.org/" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-[#0a0a23]/10 flex items-center justify-center text-[#0a0a23] text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-free-code-camp"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">freeCodeCamp</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">منصة تفاعلية عالمية مجانية تماماً، تمنحك شهادات معتمدة بعد إنجاز تحديات برمجية ومشاريع حقيقية. ممتازة للتطبيق المستمر.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة المنصة <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+
+                <!-- MDN -->
+                <a href="https://developer.mozilla.org/" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-black/5 flex items-center justify-center text-dark text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-book"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">MDN Web Docs</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">المرجع الرسمي والأشمل لجميع مطوري الويب (مقدم من شركة موزيلا). يحتوي على توثيق احترافي لجميع اللغات والتقنيات والأكواد.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة المنصة <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center justify-center gap-4 text-center">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-3xl"></i>
+                    <span class="font-extrabold text-3xl text-white tracking-wide">مَسار</span>
+                </div>
+                <p class="text-gray-400 text-lg">
+                    جميع الحقوق محفوظة لمنصة مسار © 2026
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <script>
+        // سكربت الموبايل منيو
         document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('mobile-menu-btn');
             const menu = document.getElementById('mobile-menu');

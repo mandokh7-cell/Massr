@@ -194,30 +194,30 @@
             <!-- Grid: Fixed 2 items for homepage -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto" id="roadmaps-grid">
                 
-                <!-- 1. Locked Web Dev Roadmap -->
-                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 cursor-pointer group flex flex-col h-full overflow-hidden relative" onclick="showUnderDevelopmentMsg()">
+                <!-- 1. Active Web Dev Roadmap -->
+                <a href="web.html" class="block bg-white rounded-3xl shadow-sm border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-200">
                     
-                    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center transition-all group-hover:bg-slate-900/70">
-                        <div class="bg-white/20 p-4 rounded-full mb-3 backdrop-blur-md border border-white/30 transform group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-solid fa-lock text-3xl text-white"></i>
-                        </div>
-                        <span class="text-white font-bold bg-primary/90 px-4 py-1.5 rounded-full text-sm tracking-wide shadow-lg">قريباً.. قيد التطوير</span>
-                    </div>
-
-                    <div class="h-44 w-full relative bg-gray-50 flex items-center justify-center overflow-hidden border-b border-gray-100">
-                        <i class="fa-solid fa-laptop-code text-8xl text-gray-200 absolute -right-6 -bottom-6 transform rotate-12"></i>
-                        <div class="w-16 h-16 bg-white border border-gray-100 shadow-sm rounded-2xl flex items-center justify-center text-3xl text-gray-400 z-10">
+                    <div class="h-44 w-full relative bg-blue-50 flex items-center justify-center overflow-hidden border-b border-blue-100/50">
+                        <i class="fa-solid fa-laptop-code text-8xl text-blue-100 absolute -right-6 -bottom-6 transform rotate-12 group-hover:scale-110 transition-transform duration-500"></i>
+                        <div class="w-16 h-16 bg-white border border-blue-100 shadow-md rounded-2xl flex items-center justify-center text-3xl text-primary z-10 group-hover:-translate-y-2 transition-transform duration-300">
                             <i class="fa-solid fa-laptop-code"></i>
                         </div>
                     </div>
                     
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="text-lg font-bold text-gray-400 mb-2">تطوير المواقع (Web Dev)</h3>
-                        <p class="text-gray-400 flex-grow text-sm leading-relaxed">
+                    <div class="p-6 flex flex-col flex-grow relative">
+                        <div class="flex justify-between items-start mb-3">
+                            <h3 class="text-lg font-bold text-dark group-hover:text-primary transition-colors">تطوير المواقع</h3>
+                            <span class="text-[10px] font-black px-2 py-0.5 rounded-md bg-blue-100 text-blue-700 uppercase tracking-wider">Web Development</span>
+                        </div>
+                        <p class="text-gray-500 flex-grow text-sm leading-relaxed mb-4">
                             تعلم كيفية بناء واجهات المستخدم التفاعلية والأنظمة الخلفية القوية خطوة بخطوة.
                         </p>
+                        <div class="mt-auto pt-4 border-t border-gray-50 flex justify-between items-center text-sm font-bold text-primary opacity-80 group-hover:opacity-100 transition-opacity">
+                            <span>ابدأ التعلم الآن</span>
+                            <i class="fa-solid fa-arrow-left transform group-hover:-translate-x-1 transition-transform"></i>
+                        </div>
                     </div>
-                </div>
+                </a>
 
                 <!-- 2. Locked Roadmap (Backend / SE) -->
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 cursor-pointer group flex flex-col h-full overflow-hidden relative" onclick="showUnderDevelopmentMsg()">
@@ -558,6 +558,7 @@
         }
 
 
+        // --- 4. Custom Message Box ---
         function showCustomMsg(title, body, iconClass, iconBg, iconColor) {
             const box = document.getElementById('custom-msg-box');
             const content = document.getElementById('custom-msg-content');
@@ -605,6 +606,7 @@
             );
         }
 
+        // --- 5. Suggestion Form ---
         function submitSuggestion() {
             const btn = document.querySelector('#suggestions button[type="submit"]');
             const originalText = btn.innerHTML;

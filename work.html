@@ -1,0 +1,465 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الجامعة وسوق العمل | منصة مسار</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Modern Blue
+                        secondary: '#0D9488', // Teal
+                        dark: '#0F172A', // Slate 900
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F3F4F6;
+            scroll-behavior: smooth;
+        }
+
+        /* Animations */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .animate-slide-left { animation: slideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-fade-in { animation: fadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* --- Sidebar Menu Animations --- */
+        .hamburger-line {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .menu-open .line-1 { 
+            transform: translateY(8px) rotate(45deg); 
+            background-color: #2563EB; 
+        }
+        .menu-open .line-2 { 
+            opacity: 0; 
+            transform: scale(0); 
+        }
+        .menu-open .line-3 { 
+            transform: translateY(-8px) rotate(-45deg); 
+            background-color: #2563EB; 
+        }
+
+        #sidebar-menu {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+            transform: scaleY(0) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-menu.is-active {
+            transform: scaleY(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar-menu.is-active .sidebar-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar-link:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar-link:nth-child(3) { transition-delay: 0.3s; }
+        .sidebar-link:nth-child(4) { transition-delay: 0.4s; }
+        .sidebar-link:nth-child(5) { transition-delay: 0.5s; }
+
+        #menu-overlay {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
+
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50 transition-colors duration-300 relative" id="main-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center relative z-50">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold group-hover:bg-blue-700 transition-colors">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
+                    </a>
+                </div>
+                
+                <!-- Hamburger Button (Visible on ALL screens) -->
+                <div class="flex items-center relative z-50">
+                    <button id="menu-toggle-btn" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex flex-col justify-center items-center gap-1.5 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative z-[60]">
+                        <span class="hamburger-line line-1 w-6 h-0.5 bg-current rounded-full block"></span>
+                        <span class="hamburger-line line-2 w-5 h-0.5 bg-current rounded-full block self-end ml-3"></span>
+                        <span class="hamburger-line line-3 w-6 h-0.5 bg-current rounded-full block"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stylish Sidebar Menu -->
+        <div id="sidebar-menu" class="absolute top-20 left-4 sm:left-6 lg:left-8 w-[280px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 z-40 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-primary before:to-secondary">
+            <div class="flex flex-col space-y-1 mt-2">
+                <a href="index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    الرئيسية
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <a href="roadmap.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-route text-sm"></i>
+                    </div>
+                    المسارات التقنية
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <!-- Active Page Indicator (الجامعة وسوق العمل) -->
+                <a href="work.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold bg-blue-50 transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-primary transition-colors">
+                        <i class="fa-solid fa-briefcase text-sm"></i>
+                    </div>
+                    الجامعة وسوق العمل
+                </a>
+                
+                <a href="guidance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-lightbulb text-sm"></i>
+                    </div>
+                    إرشادات ونصائح
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <div class="my-2 border-t border-gray-100 w-full"></div>
+                
+                <a href="developer.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group mt-2">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-code text-sm"></i>
+                    </div>
+                    عن المطورين
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div id="menu-overlay" class="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 opacity-0 pointer-events-none"></div>
+
+    <section id="curriculum" class="py-24 bg-white relative min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12">
+                <span class="inline-block py-1 px-3 rounded-full bg-blue-50 text-primary font-bold tracking-wider text-sm mb-3">التطبيق العملي</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">كيف تخدم مناهجك الأكاديمية مسارك المهني؟</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto text-base md:text-lg">
+                    رحلة تفاعلية تربط المواد الدراسية التي تدرسها في الكلية بالمهارات المطلوبة في سوق العمل. اختر مسارك وابدأ الرحلة.
+                </p>
+            </div>
+
+            <!-- Floating Capsule Tabs -->
+            <div class="flex flex-wrap justify-center gap-2 bg-gray-50/80 p-2 border border-gray-100 rounded-3xl md:rounded-full mx-auto w-fit mb-12 shadow-[0_2px_10px_rgb(0,0,0,0.02)] backdrop-blur-md">
+                <button class="tab-btn bg-dark text-white shadow-md px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('se', this)">
+                    <i class="fa-solid fa-server"></i> هندسة برمجيات
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('ai', this)">
+                    <i class="fa-solid fa-brain"></i> ذكاء اصطناعي
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('cyber', this)">
+                    <i class="fa-solid fa-shield-halved"></i> أمن سيبراني
+                </button>
+                <button class="tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2" onclick="changeTrack('games', this)">
+                    <i class="fa-solid fa-gamepad"></i> تطوير ألعاب
+                </button>
+            </div>
+
+            <!-- Interactive Map/Stepper Content Area -->
+            <div id="curriculum-viewer" class="min-h-[400px] flex flex-col justify-between relative bg-transparent">
+                <!-- Javascript will inject the Map Stepper here -->
+            </div>
+        </div>
+        
+        <!-- Subtle background elements -->
+        <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue-50 rounded-full blur-3xl opacity-60 -z-0"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-teal-50 rounded-full blur-3xl opacity-60 -z-0"></div>
+    </section>
+
+    <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center justify-center gap-4 text-center">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-3xl"></i>
+                    <span class="font-extrabold text-3xl text-white tracking-wide">مَسار</span>
+                </div>
+                <p class="text-gray-400 text-lg">
+                    جميع الحقوق محفوظة لمنصة مسار © 2026
+                </p>
+                <p class="text-sm text-gray-500">
+                    تم التطوير كنموذج أولي لمسابقة برمجية.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Setup Sidebar Menu Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            setupSidebarMenu();
+            renderCurriculumStep('fade');
+        });
+
+        function setupSidebarMenu() {
+            const btn = document.getElementById('menu-toggle-btn');
+            const menu = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const links = document.querySelectorAll('.sidebar-link');
+            let isMenuOpen = false;
+
+            function openMenu() {
+                isMenuOpen = true;
+                btn.classList.add('menu-open');
+                menu.classList.add('is-active');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                btn.classList.remove('menu-open');
+                menu.classList.remove('is-active');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            function toggleMenu(e) {
+                e.stopPropagation();
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            btn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            links.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if(isMenuOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        }
+
+        // --- 2. Curriculum Interactive Map Logic ---
+        const curriculumData = {
+            'se': {
+                color: 'blue',
+                steps: [
+                    { titleAr: "البرمجة الشيئية", titleEn: "OOP", icon: "fa-code", desc: "تمثل الأساس لكتابة كود نظيف وتغطي تصميم البرمجيات واختبارها، وهي مهارة لا غنى عنها في أي شركة لبناء أنظمة قابلة للتطوير." },
+                    { titleAr: "تصميم البرمجيات", titleEn: "Design", icon: "fa-sitemap", desc: "تنقل الطالب لبيئة العمل الحقيقية عبر تعلم أسلوب التشفير النظيف، التقييم، وتصميم هيكلية متماسكة للمشاريع البرمجية." },
+                    { titleAr: "قواعد البيانات", titleEn: "Databases", icon: "fa-database", desc: "أساسية لمطوري النظم الخلفية (Backend) لتعلم لغة SQL ومعمارية قواعد البيانات وأنظمة إدارتها بكفاءة عالية." },
+                    { titleAr: "نظم التشغيل", titleEn: "OS", icon: "fa-microchip", desc: "ضرورية لفهم كيفية جدولة المعالج (CPU)، إدارة الذاكرة، ونظم الملفات لإنشاء تطبيقات ويب أو سيرفرات ذات أداء عالٍ." }
+                ]
+            },
+            'ai': {
+                color: 'teal',
+                steps: [
+                    { titleAr: "الشبكات العصبية", titleEn: "Neural Networks", icon: "fa-network-wired", desc: "تمثل قلب هذا المسار، حيث تدرس خوارزميات التعلم للشبكات العصبية الاصطناعية وتطبيقاتها في التعرف على الصور والتنبؤ." },
+                    { titleAr: "تحليل الخوارزميات", titleEn: "Algorithms", icon: "fa-cogs", desc: "لتعلم خوارزميات 'فرق تسود'، البرمجة الديناميكية، والبحث البياني، وهي أدوات أساسية لبناء نماذج ذكاء اصطناعي سريعة." },
+                    { titleAr: "الرياضيات الداعمة", titleEn: "Mathematics", icon: "fa-square-root-variable", desc: "يعتمد المسار بقوة على 'الجبر الخطي' لفهم الفراغات الاتجاهية، والإحصاء التطبيقي والتحليل العددي." }
+                ]
+            },
+            'cyber': {
+                color: 'slate',
+                steps: [
+                    { titleAr: "أمن الحاسب", titleEn: "Security", icon: "fa-user-shield", desc: "الدعامة الرئيسية لهذا المجال، حيث تغطي نقاط خرق الأمان، طرق الدفاع، وأساسيات التشفير لحماية الأنظمة من الاختراقات." },
+                    { titleAr: "رياضيات متقطعة", titleEn: "Discrete Math", icon: "fa-calculator", desc: "توفر الأساس النظري القوي عبر الجبر البولياني، المنطق الرياضي، والبوابات المنطقية التي يعتمد عليها علم التشفير." }
+                ]
+            },
+            'games': {
+                color: 'purple',
+                steps: [
+                    { titleAr: "الرسم بالحاسب", titleEn: "Graphics", icon: "fa-shapes", desc: "مادة أساسية جداً لتعلم التحويلات ثلاثية الأبعاد (3D)، رسم الأشكال، وفهم التفاعل بين المكونات المادية لبناء محركات الألعاب." }
+                ]
+            }
+        };
+
+        const colorMap = {
+            'blue': { text: 'text-blue-600', bg: 'bg-blue-600', lightBg: 'bg-blue-50/50', border: 'border-blue-100', btn: 'bg-blue-600 hover:bg-blue-700', ring: 'ring-blue-200' },
+            'teal': { text: 'text-teal-600', bg: 'bg-teal-600', lightBg: 'bg-teal-50/50', border: 'border-teal-100', btn: 'bg-teal-600 hover:bg-teal-700', ring: 'ring-teal-200' },
+            'slate': { text: 'text-slate-600', bg: 'bg-slate-600', lightBg: 'bg-slate-50', border: 'border-slate-200', btn: 'bg-slate-700 hover:bg-slate-800', ring: 'ring-slate-200' },
+            'purple': { text: 'text-purple-600', bg: 'bg-purple-600', lightBg: 'bg-purple-50/50', border: 'border-purple-100', btn: 'bg-purple-600 hover:bg-purple-700', ring: 'ring-purple-200' }
+        };
+
+        let currentTrackId = 'se';
+        let currentStepIndex = 0;
+
+        function changeTrack(trackId, btnElement) {
+            currentTrackId = trackId;
+            currentStepIndex = 0; 
+
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.className = "tab-btn text-gray-500 hover:bg-gray-200 hover:text-gray-800 px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2";
+            });
+            btnElement.className = "tab-btn bg-dark text-white shadow-md px-5 py-2.5 rounded-2xl md:rounded-full text-sm font-bold transition-all flex items-center gap-2";
+
+            renderCurriculumStep('fade');
+        }
+
+        function nextCurriculumStep() {
+            if(currentStepIndex < curriculumData[currentTrackId].steps.length - 1) {
+                currentStepIndex++;
+                renderCurriculumStep('right'); 
+            }
+        }
+
+        function prevCurriculumStep() {
+            if(currentStepIndex > 0) {
+                currentStepIndex--;
+                renderCurriculumStep('left'); 
+            }
+        }
+
+        function goToCurriculumStep(index) {
+            if (index === currentStepIndex) return;
+            const direction = index > currentStepIndex ? 'right' : 'left';
+            currentStepIndex = index;
+            renderCurriculumStep(direction);
+        }
+
+        function renderCurriculumStep(animationDirection = 'fade') {
+            const track = curriculumData[currentTrackId];
+            const stepData = track.steps[currentStepIndex];
+            const theme = colorMap[track.color];
+            const totalSteps = track.steps.length;
+            
+            const viewer = document.getElementById('curriculum-viewer');
+            
+            let timelineHTML = `
+                <div class="relative flex justify-between items-center mb-8 w-full max-w-2xl mx-auto px-4 z-0">
+                    <div class="absolute top-1/2 right-0 w-full h-1 bg-gray-100 -translate-y-1/2 -z-10 rounded-full"></div>
+                    <div class="absolute top-1/2 right-0 h-1 ${theme.bg} -translate-y-1/2 -z-10 rounded-full transition-all duration-700 ease-out" style="width: ${(currentStepIndex / (totalSteps - 1 || 1)) * 100}%"></div>
+            `;
+            
+            for(let i = 0; i < totalSteps; i++) {
+                const isPast = i <= currentStepIndex;
+                const isActive = i === currentStepIndex;
+                const nodeClass = isPast 
+                    ? (isActive ? `${theme.bg} text-white border-white scale-125 shadow-md ring-4 ${theme.ring}` : `${theme.bg} text-white border-white hover:scale-110`) 
+                    : `bg-white text-gray-300 border-gray-200 hover:border-gray-300`;
+
+                timelineHTML += `
+                    <div class="flex flex-col items-center cursor-pointer group" onclick="goToCurriculumStep(${i})">
+                        <div class="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-sm md:text-base border-4 transition-all duration-300 ${nodeClass}">
+                            ${i + 1}
+                        </div>
+                    </div>
+                `;
+            }
+            timelineHTML += `</div>`;
+
+            let animationClass = 'animate-fade-in';
+            if(animationDirection === 'right') animationClass = 'animate-slide-right';
+            if(animationDirection === 'left') animationClass = 'animate-slide-left';
+
+            const cardHTML = `
+                <div class="flex-grow flex items-center justify-center mb-6 overflow-hidden w-full">
+                    <div class="w-full max-w-2xl mx-auto ${animationClass} bg-white border border-gray-100 rounded-[2rem] p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative transition-all group hover:border-gray-200 overflow-hidden">
+                        
+                        <div class="absolute -left-16 -top-16 w-48 h-48 ${theme.lightBg} rounded-full blur-3xl opacity-50 pointer-events-none transition-transform duration-700 group-hover:scale-125"></div>
+
+                        <div class="flex items-center gap-4 mb-5 relative z-10 border-b border-gray-50 pb-5">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl ${theme.lightBg} border ${theme.border} flex items-center justify-center shadow-sm text-2xl ${theme.text}">
+                                <i class="fa-solid ${stepData.icon}"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-gray-400 mb-1.5 flex items-center gap-1">
+                                    <i class="fa-solid fa-map-pin"></i> المحطة ${currentStepIndex + 1}
+                                </span>
+                                <h3 class="text-lg md:text-xl font-bold text-dark flex items-center gap-2 flex-wrap">
+                                    ${stepData.titleAr}
+                                    <span class="text-[10px] md:text-xs font-black px-2 py-0.5 rounded-md ${theme.bg} text-white uppercase tracking-wider shadow-sm">${stepData.titleEn}</span>
+                                </h3>
+                            </div>
+                        </div>
+                        
+                        <div class="relative z-10 pl-2">
+                            <p class="text-gray-500 text-sm md:text-base leading-relaxed md:leading-loose font-medium">
+                                ${stepData.desc}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            let footerHTML = `<div class="flex items-center justify-between mt-auto max-w-2xl mx-auto w-full px-2">`;
+            
+            if(currentStepIndex > 0) {
+                footerHTML += `<button onclick="prevCurriculumStep()" class="px-5 py-2.5 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors flex items-center gap-2 text-sm md:text-base">
+                    <i class="fa-solid fa-arrow-right text-xs"></i> المحطة السابقة
+                </button>`;
+            } else {
+                footerHTML += `<div></div>`;
+            }
+
+            if(currentStepIndex < totalSteps - 1) {
+                footerHTML += `<button onclick="nextCurriculumStep()" class="px-6 py-2.5 rounded-xl font-bold text-white shadow-md ${theme.btn} transition-all flex items-center gap-2 text-sm md:text-base transform hover:-translate-y-0.5">
+                    المحطة التالية <i class="fa-solid fa-arrow-left text-xs"></i>
+                </button>`;
+            } else {
+                footerHTML += `<div class="px-6 py-2.5 rounded-xl font-bold text-gray-400 bg-gray-50 border border-gray-100 flex items-center gap-2 text-sm md:text-base">
+                    نهاية المسار <i class="fa-solid fa-flag-checkered"></i>
+                </div>`;
+            }
+            footerHTML += `</div>`;
+
+            viewer.innerHTML = timelineHTML + cardHTML + footerHTML;
+        }
+
+    </script>
+</body>
+</html>

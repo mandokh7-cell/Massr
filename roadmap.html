@@ -45,52 +45,134 @@
             background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
             background-size: 20px 20px;
         }
+
+        /* --- Sidebar Menu Animations --- */
+        .hamburger-line {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .menu-open .line-1 { 
+            transform: translateY(8px) rotate(45deg); 
+            background-color: #2563EB; 
+        }
+        .menu-open .line-2 { 
+            opacity: 0; 
+            transform: scale(0); 
+        }
+        .menu-open .line-3 { 
+            transform: translateY(-8px) rotate(-45deg); 
+            background-color: #2563EB; 
+        }
+
+        #sidebar-menu {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+            transform: scaleY(0) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-menu.is-active {
+            transform: scaleY(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar-menu.is-active .sidebar-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar-link:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar-link:nth-child(3) { transition-delay: 0.3s; }
+        .sidebar-link:nth-child(4) { transition-delay: 0.4s; }
+        .sidebar-link:nth-child(5) { transition-delay: 0.5s; }
+
+        #menu-overlay {
+            transition: opacity 0.3s ease;
+        }
     </style>
 </head>
-<body class="text-gray-800 antialiased relative custom-scrollbar">
+<body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
 
-    <!-- Navigation matches index.html -->
-    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50 transition-colors duration-300 relative" id="main-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center gap-2">
-                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
+                <div class="flex items-center relative z-50">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold group-hover:bg-blue-700 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </div>
                         <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
                     </a>
                 </div>
                 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
-                    <a href="index.html" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
-                    <a href="roadmap.html" class="text-primary font-bold transition">المسارات التقنية</a>
-                    <a href="index.html#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
-                    <a href="developer.html" class="text-gray-600 hover:text-primary font-medium transition">المطور</a>
-                </div>
-
-                <!-- Mobile Hamburger Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none text-2xl p-2 rounded-lg bg-gray-50">
-                        <i class="fa-solid fa-bars"></i>
+                <!-- Hamburger Button (Visible on ALL screens) -->
+                <div class="flex items-center relative z-50">
+                    <button id="menu-toggle-btn" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex flex-col justify-center items-center gap-1.5 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative z-[60]">
+                        <span class="hamburger-line line-1 w-6 h-0.5 bg-current rounded-full block"></span>
+                        <span class="hamburger-line line-2 w-5 h-0.5 bg-current rounded-full block self-end ml-3"></span>
+                        <span class="hamburger-line line-3 w-6 h-0.5 bg-current rounded-full block"></span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
-            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
-                <a href="index.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
-                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-primary bg-blue-50 transition">المسارات التقنية</a>
-                <a href="index.html#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
-                <a href="developer.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-secondary bg-teal-50 hover:bg-teal-100 transition border border-teal-100 mt-2">
-                    <i class="fa-solid fa-code mr-2"></i> المطور
+        <!-- Stylish Sidebar Menu -->
+        <div id="sidebar-menu" class="absolute top-20 left-4 sm:left-6 lg:left-8 w-[280px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 z-40 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-primary before:to-secondary">
+            <div class="flex flex-col space-y-1 mt-2">
+                <a href="index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    الرئيسية
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <!-- Active Page Indicator (المسارات التقنية) -->
+                <a href="roadmap.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold bg-blue-50 transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-primary transition-colors">
+                        <i class="fa-solid fa-route text-sm"></i>
+                    </div>
+                    المسارات التقنية
+                </a>
+                
+                <a href="work.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-briefcase text-sm"></i>
+                    </div>
+                    الجامعة وسوق العمل
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                <a href="guidance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-lightbulb text-sm"></i>
+                    </div>
+                    إرشادات ونصائح
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <div class="my-2 border-t border-gray-100 w-full"></div>
+                
+                <a href="developer.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group mt-2">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-code text-sm"></i>
+                    </div>
+                    عن المطور
                 </a>
             </div>
         </div>
     </nav>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div id="menu-overlay" class="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 opacity-0 pointer-events-none"></div>
 
     <!-- Page Header -->
     <header class="py-16 bg-white border-b border-gray-100 relative overflow-hidden">
@@ -154,6 +236,58 @@
     </div>
 
     <script>
+        // Setup Sidebar Menu Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            setupSidebarMenu();
+            renderAllRoadmaps();
+        });
+
+        function setupSidebarMenu() {
+            const btn = document.getElementById('menu-toggle-btn');
+            const menu = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const links = document.querySelectorAll('.sidebar-link');
+            let isMenuOpen = false;
+
+            function openMenu() {
+                isMenuOpen = true;
+                btn.classList.add('menu-open');
+                menu.classList.add('is-active');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                btn.classList.remove('menu-open');
+                menu.classList.remove('is-active');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            function toggleMenu(e) {
+                e.stopPropagation();
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            btn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            links.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if(isMenuOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        }
+
         // Database mock for all roadmaps
         const allRoadmapsData = [
             { 
@@ -163,7 +297,8 @@
                 icon: "fa-laptop-code", 
                 shortDesc: "تعلم كيفية بناء واجهات المستخدم التفاعلية والأنظمة الخلفية القوية خطوة بخطوة.",
                 colorClass: "blue",
-                isLocked: false // Changed to false to make it clickable
+                href: "web.html",
+                isLocked: false
             },
             { 
                 id: "se-backend", 
@@ -172,7 +307,8 @@
                 icon: "fa-server", 
                 shortDesc: "صناعة الأنظمة الخلفية وإدارة قواعد البيانات لضمان كفاءة المواقع.",
                 colorClass: "gray",
-                isLocked: true 
+                href: "se.html",
+                isLocked: false 
             },
             { 
                 id: "ai-ml", 
@@ -181,7 +317,8 @@
                 icon: "fa-brain", 
                 shortDesc: "تدريب النماذج والخوارزميات لاتخاذ القرارات وتحليل البيانات.",
                 colorClass: "teal",
-                isLocked: true 
+                href: "ai.html",
+                isLocked: false 
             },
             { 
                 id: "cybersecurity", 
@@ -190,7 +327,8 @@
                 icon: "fa-shield-halved", 
                 shortDesc: "حماية الأنظمة والشبكات والبرامج من الهجمات الرقمية والاختراقات.",
                 colorClass: "slate",
-                isLocked: true 
+                href: "cybersecurity.html",
+                isLocked: false 
             },
             { 
                 id: "gamedev", 
@@ -199,7 +337,8 @@
                 icon: "fa-gamepad", 
                 shortDesc: "دمج الفن البرمجي بالرياضيات لخلق عوالم تفاعلية 2D و 3D.",
                 colorClass: "purple",
-                isLocked: true 
+                href: "gamedev.html",
+                isLocked: false 
             },
             { 
                 id: "mobile-dev", 
@@ -208,23 +347,10 @@
                 icon: "fa-mobile-screen", 
                 shortDesc: "برمجة تطبيقات ذكية تعمل على أنظمة أندرويد و iOS باستخدام أحدث التقنيات.",
                 colorClass: "green",
-                isLocked: true 
+                href: "mobile.html",
+                isLocked: false 
             }
         ];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setupMobileMenu();
-            renderAllRoadmaps();
-        });
-
-        function setupMobileMenu() {
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
-        }
 
         function renderAllRoadmaps() {
             const container = document.getElementById('all-roadmaps-grid');
@@ -266,10 +392,9 @@
                     </div>
                     `;
                 } else {
-                    // Active Card Design (Web Dev)
-                    // Added a wrapper to link to web.html
+                    // Active Card Design
                     cardHTML = `
-                    <a href="web.html" class="block bg-white rounded-3xl shadow-sm border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-200">
+                    <a href="${roadmap.href}" class="block bg-white rounded-3xl shadow-sm border border-gray-200 cursor-pointer group flex flex-col h-full overflow-hidden relative transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-blue-200">
                         
                         <div class="h-44 w-full relative bg-blue-50 flex items-center justify-center overflow-hidden border-b border-blue-100/50">
                             <i class="fa-solid ${roadmap.icon} text-8xl text-blue-100 absolute -right-6 -bottom-6 transform rotate-12 group-hover:scale-110 transition-transform duration-500"></i>

@@ -39,6 +39,59 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* --- Sidebar Menu Animations --- */
+        .hamburger-line {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .menu-open .line-1 { 
+            transform: translateY(8px) rotate(45deg); 
+            background-color: #2563EB; 
+        }
+        .menu-open .line-2 { 
+            opacity: 0; 
+            transform: scale(0); 
+        }
+        .menu-open .line-3 { 
+            transform: translateY(-8px) rotate(-45deg); 
+            background-color: #2563EB; 
+        }
+
+        #sidebar-menu {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+            transform: scaleY(0) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-menu.is-active {
+            transform: scaleY(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar-menu.is-active .sidebar-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar-link:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar-link:nth-child(3) { transition-delay: 0.3s; }
+        .sidebar-link:nth-child(4) { transition-delay: 0.4s; }
+        .sidebar-link:nth-child(5) { transition-delay: 0.5s; }
+
+        #menu-overlay {
+            transition: opacity 0.3s ease;
+        }
         
         /* هندسة الخط الزمني لتكون مريحة جداً على الهاتف */
         .timeline-container {
@@ -82,47 +135,77 @@
 <body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
 
     <!-- Navigation -->
-    <nav class="bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-40">
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50 relative" id="main-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center gap-2">
-                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold hover:rotate-12 transition-transform">
+                <div class="flex items-center relative z-50">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold group-hover:bg-blue-700 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </div>
                         <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
                     </a>
                 </div>
                 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
-                    <a href="index.html" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
-                    <a href="roadmap.html" class="text-primary font-bold transition">المسارات التقنية</a>
-                    <a href="index.html#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
-                    <a href="developer.html" class="text-gray-600 hover:text-primary font-medium transition">المطورين</a>
-                </div>
-
-                <!-- Mobile Hamburger Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none text-2xl p-2 rounded-lg bg-gray-50">
-                        <i class="fa-solid fa-bars"></i>
+                <!-- Hamburger Button (Visible on ALL screens) -->
+                <div class="flex items-center relative z-50">
+                    <button id="menu-toggle-btn" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex flex-col justify-center items-center gap-1.5 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative z-[60]">
+                        <span class="hamburger-line line-1 w-6 h-0.5 bg-current rounded-full block"></span>
+                        <span class="hamburger-line line-2 w-5 h-0.5 bg-current rounded-full block self-end ml-3"></span>
+                        <span class="hamburger-line line-3 w-6 h-0.5 bg-current rounded-full block"></span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
-            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
-                <a href="index.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
-                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-primary bg-blue-50 transition">المسارات التقنية</a>
-                <a href="index.html#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
-                <a href="developer.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-secondary bg-teal-50 hover:bg-teal-100 transition border border-teal-100 mt-2">
-                    <i class="fa-solid fa-code mr-2"></i> المطورين
+        <!-- Stylish Sidebar Menu -->
+        <div id="sidebar-menu" class="absolute top-20 left-4 sm:left-6 lg:left-8 w-[280px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 z-40 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-primary before:to-secondary">
+            <div class="flex flex-col space-y-1 mt-2">
+                <a href="index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    الرئيسية
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <!-- Active Page Indicator (المسارات التقنية) -->
+                <a href="roadmap.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold bg-blue-50 transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-primary transition-colors">
+                        <i class="fa-solid fa-route text-sm"></i>
+                    </div>
+                    المسارات التقنية
+                </a>
+                
+                <a href="work.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-briefcase text-sm"></i>
+                    </div>
+                    الجامعة وسوق العمل
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                <a href="guidance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-lightbulb text-sm"></i>
+                    </div>
+                    إرشادات ونصائح
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <div class="my-2 border-t border-gray-100 w-full"></div>
+                
+                <a href="developer.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group mt-2">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-code text-sm"></i>
+                    </div>
+                    عن المطور
                 </a>
             </div>
         </div>
     </nav>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div id="menu-overlay" class="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 opacity-0 pointer-events-none"></div>
 
     <!-- Header Section -->
     <header class="bg-white py-16 md:py-24 border-b border-gray-100 relative overflow-hidden">
@@ -260,6 +343,10 @@
                                     <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-brands fa-chrome text-gray-400"></i> محركات المتصفحات (Browsers)</h4>
                                     <p class="text-sm text-gray-600 leading-relaxed">فهم كيفية قيام المتصفح بتحليل الكود وتحويله إلى شجرة عناصر (DOM) ليعرضها للمستخدم.</p>
                                 </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: الشبكات</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">بروتوكولات HTTP وDNS اللي هتشوفها هنا هي نفسها المفاهيم النظرية اللي بتدرسها في مقرر الشبكات، بس هنا هتشوف تطبيقها المباشر على أي موقع بتفتحه يوميًا.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -298,6 +385,10 @@
                                 <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100">
                                     <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-mobile-screen-button text-gray-500"></i> التصميم المتجاوب (Responsive)</h4>
                                     <p class="text-sm text-gray-600 leading-relaxed">استخدام Media Queries لضمان عمل الموقع بشكل مثالي على شاشات الهواتف، الأجهزة اللوحية، والشاشات العملاقة.</p>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                                    <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-plus text-amber-500"></i> مهارة عملية إضافية (خارج المقررات)</h4>
+                                    <p class="text-sm text-amber-700/90 leading-relaxed">HTML وCSS مهارات صناعية عملية بحتة، نادرًا ما تُدرَّس كمقرر مستقل — لازم تتعلمها بشكل موازي لمقررات كليتك.</p>
                                 </div>
                             </div>
                         </div>
@@ -343,6 +434,10 @@
                                         <p class="text-sm text-gray-500 mt-1">رفع مشاريعك للعالم، بناء معرض أعمالك (Portfolio)، والمساهمة في المشاريع مفتوحة المصدر.</p>
                                     </div>
                                 </li>
+                                <li class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                                    <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-plus text-amber-500"></i> مهارة عملية إضافية (خارج المقررات)</h4>
+                                    <p class="text-sm text-amber-700/90 leading-relaxed">إدارة الإصدارات مهارة صناعية أساسية في أي شركة، لكنها نادرًا ما تُدرَّس كمقرر مستقل — الأفضل تتعلمها بنفسك بالتوازي مع دراستك.</p>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -377,6 +472,10 @@
                                 <div class="bg-yellow-50/50 p-4 rounded-xl border border-yellow-100/50 sm:col-span-2">
                                     <h4 class="font-bold text-yellow-900 text-sm mb-2"><i class="fa-solid fa-bolt text-yellow-600 ml-1"></i> مفاهيم متقدمة (Advanced JS)</h4>
                                     <p class="text-sm text-gray-600 leading-relaxed">البرمجة غير المتزامنة (Asynchronous)، جلب البيانات من الخوادم (Fetch API & Promises)، التحديثات الحديثة للغة (ES6+ Features)، وفهم كيفية عمل (Event Loop).</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200 sm:col-span-2">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: أساسيات البرمجة وهياكل البيانات</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">المصفوفات، الشروط، والحلقات اللي بتتعلمها هنا هي نفس المفاهيم اللي درستها في مقرراتك، لكن هنا هتشوفها بتشتغل فعليًا جوه متصفح حقيقي أمام مستخدم حقيقي.</p>
                                 </div>
                             </div>
                         </div>
@@ -417,6 +516,10 @@
                                     <div class="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0"></div>
                                     <p class="text-sm font-bold text-gray-700">التنقل بين الصفحات بدون تحميل (React Router).</p>
                                 </div>
+                                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                                    <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-plus text-amber-500"></i> مهارة عملية إضافية (خارج المقررات)</h4>
+                                    <p class="text-sm text-amber-700/90 leading-relaxed">React مكتبة صناعية تتغير باستمرار، ونادرًا ما تُدرَّس داخل المقررات الجامعية — تعلّمها هنا خطوة تسبق بها زملاءك في سوق العمل.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -448,6 +551,11 @@
                                     <h4 class="font-bold text-purple-900 text-lg mb-2">Bootstrap</h4>
                                     <p class="text-sm text-gray-600">الخيار الكلاسيكي. يوفر مكونات جاهزة (Components) مثل الأزرار والقوائم لتركيبها سريعاً.</p>
                                 </div>
+                             </div>
+
+                             <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 mt-4">
+                                <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-plus text-amber-500"></i> مهارة عملية إضافية (خارج المقررات)</h4>
+                                <p class="text-sm text-amber-700/90 leading-relaxed">أطر عمل التصميم أدوات صناعية بحتة تتغير مع السوق، ومفيش مقرر جامعي بيغطيها — لازم تتابعها بنفسك بشكل مستمر.</p>
                              </div>
                              
                              <div class="mt-6 text-center bg-gray-50 py-3 rounded-xl border border-dashed border-gray-300">
@@ -496,6 +604,10 @@
                                         <p class="text-sm text-gray-500 mt-1">كيف تبني واجهات برمجة (RESTful) لتكون حلقة الوصل بين قاعدة البيانات وواجهات المستخدم.</p>
                                     </div>
                                 </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200 mt-2">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: هندسة البرمجيات، نظم التشغيل</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">تصميم السيرفر وتنظيم الطلبات هو تطبيق مباشر لمبادئ هندسة البرمجيات، وفهمك لجدولة العمليات في نظم التشغيل بيفسر ليه السيرفر بيتعامل مع آلاف الطلبات في نفس الوقت.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -538,6 +650,10 @@
                              <div class="mt-4 bg-gray-50 p-3 rounded-xl text-center border border-gray-100">
                                  <p class="text-xs font-bold text-gray-600"><i class="fa-solid fa-link text-gray-400 ml-1"></i> نصيحة: تعلم استخدام أدوات ORM مثل Mongoose أو Prisma لربط الكود بقاعدة البيانات بسهولة.</p>
                              </div>
+                             <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200 mt-4">
+                                <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: قواعد البيانات</h4>
+                                <p class="text-sm text-blue-800/80 leading-relaxed">ده تطبيق مباشر لمقرر قواعد البيانات اللي بتدرسه — نفس مفاهيم التطبيع (Normalization) والعلاقات، لكن على مشروع حقيقي بدل تمارين الكتاب.</p>
+                             </div>
                         </div>
                     </div>
                     <div class="clear-both"></div>
@@ -573,6 +689,10 @@
                                         <h4 class="font-bold text-dark text-sm mb-1">الإطلاق والنشر (Deployment)</h4>
                                         <p class="text-sm text-gray-500 leading-relaxed">رفع الواجهات على منصات مثل (Vercel) أو (Netlify). ورفع قواعد البيانات والخوادم على (Render) أو (AWS).</p>
                                     </div>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: أمن الحاسب، الشبكات</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">حماية الجلسات ومنع هجمات XSS/CORS هي التطبيق العملي لمفاهيم أمن الحاسب النظرية، وفهمك للشبكات هو نفسه اللي بيخليك تفهم إزاي موقعك بيوصل لأي حد في العالم بعد النشر.</p>
                                 </div>
                             </div>
                         </div>
@@ -657,15 +777,56 @@
     </footer>
 
     <script>
-        // سكربت الموبايل منيو
+        // Setup Sidebar Menu Animations
         document.addEventListener('DOMContentLoaded', () => {
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
+            setupSidebarMenu();
         });
+
+        function setupSidebarMenu() {
+            const btn = document.getElementById('menu-toggle-btn');
+            const menu = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const links = document.querySelectorAll('.sidebar-link');
+            let isMenuOpen = false;
+
+            function openMenu() {
+                isMenuOpen = true;
+                btn.classList.add('menu-open');
+                menu.classList.add('is-active');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                btn.classList.remove('menu-open');
+                menu.classList.remove('is-active');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            function toggleMenu(e) {
+                e.stopPropagation();
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            btn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            links.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if(isMenuOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        }
     </script>
 </body>
 </html>

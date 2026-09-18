@@ -77,6 +77,59 @@
         .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .animate-fade-in { animation: fadeInScale 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         
+        /* --- Sidebar Menu Animations --- */
+        .hamburger-line {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .menu-open .line-1 { 
+            transform: translateY(8px) rotate(45deg); 
+            background-color: #2563EB; 
+        }
+        .menu-open .line-2 { 
+            opacity: 0; 
+            transform: scale(0); 
+        }
+        .menu-open .line-3 { 
+            transform: translateY(-8px) rotate(-45deg); 
+            background-color: #2563EB; 
+        }
+
+        #sidebar-menu {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+            transform: scaleY(0) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-menu.is-active {
+            transform: scaleY(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar-menu.is-active .sidebar-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar-link:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar-link:nth-child(3) { transition-delay: 0.3s; }
+        .sidebar-link:nth-child(4) { transition-delay: 0.4s; }
+        .sidebar-link:nth-child(5) { transition-delay: 0.5s; }
+
+        #menu-overlay {
+            transition: opacity 0.3s ease;
+        }
+        
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar { width: 8px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
@@ -84,48 +137,97 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="text-gray-800 antialiased relative">
+<body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
 
-    <nav class="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-40">
+    <nav class="bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50 transition-colors duration-300 relative" id="main-nav">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="flex items-center gap-2">
-                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold">
+                <div class="flex items-center relative z-50">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold group-hover:bg-blue-700 transition-colors">
                             <i class="fa-solid fa-map-location-dot"></i>
                         </div>
                         <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
                     </a>
                 </div>
                 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center space-x-8 space-x-reverse">
-                    <a href="#home" class="text-gray-600 hover:text-primary font-medium transition">الرئيسية</a>
-                    <a href="roadmap.html" class="text-gray-600 hover:text-primary font-medium transition">المسارات التقنية</a>
-                    <a href="#curriculum" class="text-gray-600 hover:text-primary font-medium transition">الجامعة وسوق العمل</a>
-                    <a href="developer.html" class="text-gray-600 hover:text-primary font-medium transition">المطور</a>
-                </div>
+                <!-- Action Buttons (Notifications & Hamburger) -->
+                <div class="flex items-center gap-2 sm:gap-3 relative z-50">
+                    
+                    <!-- Notifications Button -->
+                    <div class="relative">
+                        <button id="notif-btn" onclick="showNotifications()" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex justify-center items-center rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative group">
+                            <i class="fa-regular fa-bell text-xl group-hover:animate-bounce"></i>
+                            <!-- Animated Red Dot Ping (only shown when there are unread notifications) -->
+                            <span id="notif-dot" class="hidden absolute top-2.5 right-2.5 flex h-3 w-3">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border-2 border-white"></span>
+                            </span>
+                        </button>
 
-                <!-- Mobile Hamburger Button -->
-                <div class="md:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-primary focus:outline-none text-2xl p-2 rounded-lg bg-gray-50">
-                        <i class="fa-solid fa-bars"></i>
+                        <!-- Notifications Dropdown Panel -->
+                        <div id="notif-panel" class="hidden fixed top-20 left-1/2 -translate-x-1/2 sm:translate-x-0 sm:left-4 lg:left-8 sm:right-auto w-[92vw] sm:w-[340px] max-w-[340px] max-h-[70vh] overflow-y-auto bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] border border-gray-100 z-50">
+                            <div class="p-4 border-b border-gray-100 font-bold text-dark flex items-center justify-between">
+                                <span>الإشعارات</span>
+                            </div>
+                            <div id="notif-list" class="divide-y divide-gray-50">
+                                <p class="text-center text-gray-400 text-sm py-8">لا توجد إشعارات حالياً</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hamburger Button -->
+                    <button id="menu-toggle-btn" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex flex-col justify-center items-center gap-1.5 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative">
+                        <span class="hamburger-line line-1 w-6 h-0.5 bg-current rounded-full block"></span>
+                        <span class="hamburger-line line-2 w-5 h-0.5 bg-current rounded-full block self-end ml-3"></span>
+                        <span class="hamburger-line line-3 w-6 h-0.5 bg-current rounded-full block"></span>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-xl z-30 transition-all duration-300 transform origin-top">
-            <div class="px-4 pt-2 pb-4 space-y-2 flex flex-col shadow-inner">
-                <a href="#home" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الرئيسية</a>
-                <a href="roadmap.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">المسارات التقنية</a>
-                <a href="#curriculum" class="mobile-link block px-4 py-3 rounded-xl text-base font-medium text-gray-700 hover:text-primary hover:bg-blue-50 transition">الجامعة وسوق العمل</a>
-                <a href="developer.html" class="mobile-link block px-4 py-3 rounded-xl text-base font-bold text-secondary bg-teal-50 hover:bg-teal-100 transition border border-teal-100 mt-2">
-                    <i class="fa-solid fa-code mr-2"></i> المطور
+        <!-- Stylish Sidebar Menu -->
+        <div id="sidebar-menu" class="absolute top-20 left-4 sm:left-6 lg:left-8 w-[280px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 z-40 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-primary before:to-secondary">
+            <div class="flex flex-col space-y-1 mt-2">
+                <a href="#home" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold bg-blue-50 transition-all group">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-primary transition-colors">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    الرئيسية
+                </a>
+                <a href="roadmap.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-route text-sm"></i>
+                    </div>
+                    المسارات التقنية
+                </a>
+                <a href="work.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-briefcase text-sm"></i>
+                    </div>
+                    الجامعة وسوق العمل
+                </a>
+                <a href="guidance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-lightbulb text-sm"></i>
+                    </div>
+                    إرشادات ونصائح
+                </a>
+                
+                <div class="my-2 border-t border-gray-100 w-full"></div>
+                
+                <a href="developer.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group mt-2">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-code text-sm"></i>
+                    </div>
+                    عن المطورين
                 </a>
             </div>
         </div>
     </nav>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div id="menu-overlay" class="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 opacity-0 pointer-events-none"></div>
 
     <header id="home" class="hero-gradient text-gray-900 py-20 lg:py-32 relative overflow-hidden">
         <div class="hero-glow"></div>
@@ -143,7 +245,7 @@
                         <a href="roadmap.html" class="bg-primary hover:bg-blue-700 text-white px-8 py-3 rounded-full font-bold text-lg transition shadow-lg shadow-blue-500/30">
                             استكشف المسارات
                         </a>
-                        <a href="#curriculum" class="bg-white border-2 border-gray-200 hover:border-primary hover:text-primary text-gray-700 px-8 py-3 rounded-full font-bold text-lg transition shadow-sm">
+                        <a href="work.html" class="bg-white border-2 border-gray-200 hover:border-primary hover:text-primary text-gray-700 px-8 py-3 rounded-full font-bold text-lg transition shadow-sm">
                             المناهج وسوق العمل
                         </a>
                     </div>
@@ -254,6 +356,7 @@
         </div>
     </section>
 
+    <!-- قسم المناهج وسوق العمل -->
     <section id="curriculum" class="py-24 bg-white relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-12">
@@ -289,6 +392,65 @@
         <!-- Subtle background elements -->
         <div class="absolute top-1/2 right-0 w-72 h-72 bg-blue-50 rounded-full blur-3xl opacity-60 -z-0"></div>
         <div class="absolute bottom-0 left-0 w-96 h-96 bg-teal-50 rounded-full blur-3xl opacity-60 -z-0"></div>
+    </section>
+
+    <!-- القسم الإعلاني الجديد للإرشادات (بتصميم هادئ ومجهول المصدر) -->
+    <section id="guidance-promo" class="py-20 bg-white relative">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gray-50 rounded-[2.5rem] p-8 md:p-12 lg:p-16 border border-gray-100 shadow-sm relative overflow-hidden flex flex-col lg:flex-row items-center gap-12 group">
+                
+                <!-- Background Decorations -->
+                <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-blue-50 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-teal-50 rounded-full blur-3xl"></div>
+                </div>
+
+                <!-- Content -->
+                <div class="relative z-10 lg:w-1/2 text-center lg:text-right">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-100 text-primary mb-6">
+                        <i class="fa-solid fa-lightbulb text-xl"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4 leading-tight">
+                        نصائح ذهبية..<br>
+                        <span class="text-primary">ترشدك في مسيرتك</span>
+                    </h2>
+                    <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                        مساحة حرة نجمع فيها خلاصة التجارب، ونصائح عملية تركز فقط على الفائدة، وتضعك على الطريق الصحيح لتطوير مسارك المهني.
+                    </p>
+                    <a href="guidance.html" class="inline-flex items-center justify-center gap-2 bg-dark hover:bg-gray-800 text-white px-8 py-3.5 rounded-xl font-bold text-lg transition-all transform hover:-translate-y-1 shadow-lg shadow-gray-900/10 w-full sm:w-auto">
+                        تصفح النصائح <i class="fa-solid fa-arrow-left text-sm"></i>
+                    </a>
+                </div>
+
+                <!-- Visual Graphics (Anonymous Mockup Card) -->
+                <div class="relative z-10 lg:w-1/2 w-full flex justify-center mt-8 lg:mt-0">
+                    <div class="relative w-full max-w-sm">
+                        <!-- Main Quote Card -->
+                        <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-100 relative z-20 transform -rotate-2 group-hover:rotate-0 transition-transform duration-500">
+                            <i class="fa-solid fa-quote-right absolute top-6 left-6 text-gray-100 text-4xl -z-10"></i>
+                            <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xl mb-4">
+                                <i class="fa-regular fa-lightbulb"></i>
+                            </div>
+                            <h4 class="font-bold text-dark mb-2">نصيحة تقنية</h4>
+                            <p class="text-gray-600 text-sm md:text-base leading-relaxed font-medium">
+                                "فهمك لأساسيات الخوارزميات وهياكل البيانات أهم بكثير من حفظك للغات البرمجة، فالتقنيات تتغير، لكن الأساسيات تبقى الأساس الصلب.."
+                            </p>
+                        </div>
+                        
+                        <!-- Background Decorative Card -->
+                        <div class="absolute top-6 -left-6 w-full bg-white/60 backdrop-blur-sm p-6 rounded-3xl shadow-sm border border-gray-100 z-10 transform rotate-3 scale-95 opacity-70 group-hover:rotate-6 group-hover:-translate-x-2 transition-all duration-500 hidden sm:block">
+                            <div class="w-10 h-10 rounded-full bg-teal-50 mb-3 opacity-60"></div>
+                            <div class="space-y-3 mt-4 opacity-50">
+                                <div class="h-2 bg-gray-200 rounded-md w-full"></div>
+                                <div class="h-2 bg-gray-200 rounded-md w-5/6"></div>
+                                <div class="h-2 bg-gray-200 rounded-md w-4/6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </section>
 
     <section id="suggestions" class="py-20 bg-gray-50">
@@ -346,47 +508,89 @@
         </div>
     </footer>
 
-    <!-- Custom Alert Box (Fixed sizing and spacing) -->
-    <div id="custom-msg-box" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-        <!-- Overlay -->
+    <!-- Custom Alert Box -->
+    <div id="custom-msg-box" class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4">
         <div class="absolute inset-0 bg-gray-900/70 backdrop-blur-sm transition-opacity" onclick="closeCustomMsg()"></div>
-        
-        <!-- Box Content (Removed heavy padding/margins causing it to overflow) -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-2xl relative z-10 w-full max-w-sm sm:max-w-md text-center transform scale-95 opacity-0 transition-all duration-300 mx-auto" id="custom-msg-content">
-            
             <div id="msg-icon-container" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 bg-blue-100">
                 <i id="msg-icon" class="fa-solid fa-info text-3xl sm:text-4xl text-primary"></i>
             </div>
-            
             <h3 id="msg-title" class="text-xl sm:text-2xl font-bold text-dark mb-2 sm:mb-3">العنوان</h3>
             <p id="msg-body" class="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-base leading-relaxed">الرسالة تظهر هنا.</p>
-            
             <button onclick="closeCustomMsg()" class="w-full bg-dark hover:bg-gray-800 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-lg shadow-gray-900/20">
                 حسناً، فهمت
             </button>
         </div>
     </div>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAkaoZwFLxGe3L4lI1qanB2YoUSNTW9Q04",
+            authDomain: "massar-9099b.firebaseapp.com",
+            projectId: "massar-9099b",
+            storageBucket: "massar-9099b.firebasestorage.app",
+            messagingSenderId: "1036360905072",
+            appId: "1:1036360905072:web:9c6783cdc98ad363535fb5"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+    </script>
+
     <script>
         // --- 1. General Logic ---
         document.addEventListener('DOMContentLoaded', () => {
-            setupMobileMenu();
+            setupSidebarMenu();
             renderCurriculumStep('fade');
         });
 
-        function setupMobileMenu() {
-            const btn = document.getElementById('mobile-menu-btn');
-            const menu = document.getElementById('mobile-menu');
-            const links = document.querySelectorAll('.mobile-link');
+        function setupSidebarMenu() {
+            const btn = document.getElementById('menu-toggle-btn');
+            const menu = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const links = document.querySelectorAll('.sidebar-link');
+            let isMenuOpen = false;
 
-            btn.addEventListener('click', () => {
-                menu.classList.toggle('hidden');
-            });
+            function openMenu() {
+                isMenuOpen = true;
+                btn.classList.add('menu-open');
+                menu.classList.add('is-active');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
 
+            function closeMenu() {
+                isMenuOpen = false;
+                btn.classList.remove('menu-open');
+                menu.classList.remove('is-active');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            function toggleMenu(e) {
+                e.stopPropagation(); // Prevent click from instantly triggering body click
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            btn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            // Close menu when clicking any link inside it
             links.forEach(link => {
-                link.addEventListener('click', () => {
-                    menu.classList.add('hidden');
-                });
+                link.addEventListener('click', closeMenu);
+            });
+            
+            // Close when clicking outside
+            document.addEventListener('click', (e) => {
+                if(isMenuOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeMenu();
+                }
             });
         }
 
@@ -470,11 +674,14 @@
 
         function renderCurriculumStep(animationDirection = 'fade') {
             const track = curriculumData[currentTrackId];
+            if (!track) return;
+            
             const stepData = track.steps[currentStepIndex];
             const theme = colorMap[track.color];
             const totalSteps = track.steps.length;
             
             const viewer = document.getElementById('curriculum-viewer');
+            if (!viewer) return;
             
             let timelineHTML = `
                 <div class="relative flex justify-between items-center mb-8 w-full max-w-2xl mx-auto px-4 z-0">
@@ -557,7 +764,6 @@
             viewer.innerHTML = timelineHTML + cardHTML + footerHTML;
         }
 
-
         // --- 4. Custom Message Box ---
         function showCustomMsg(title, body, iconClass, iconBg, iconColor) {
             const box = document.getElementById('custom-msg-box');
@@ -572,9 +778,7 @@
             iconContainer.className = `w-16 h-16 sm:w-20 sm:h-20 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 ${iconBg}`;
             icon.className = `fa-solid ${iconClass} text-3xl sm:text-4xl ${iconColor}`;
 
-            // Remove hidden and use flex
             box.classList.remove('hidden');
-            // Adding a small delay ensures the display:flex is applied before we animate opacity/scale
             requestAnimationFrame(() => {
                 content.classList.add('scale-100', 'opacity-100');
                 content.classList.remove('scale-95', 'opacity-0');
@@ -606,16 +810,28 @@
             );
         }
 
-        // --- 5. Suggestion Form ---
+        // --- 5. Suggestion Form (writes to Firestore, read on the dashboard) ---
         function submitSuggestion() {
             const btn = document.querySelector('#suggestions button[type="submit"]');
             const originalText = btn.innerHTML;
-            
+
+            const message = document.getElementById('sugg-message').value.trim();
+            if (!message) return;
+
+            const name = document.getElementById('sugg-name').value.trim();
+            const email = document.getElementById('sugg-email').value.trim();
+
             btn.innerHTML = '<span>جاري الإرسال...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             btn.classList.remove('hover:-translate-y-1');
-            
-            setTimeout(() => {
+
+            db.collection('suggestions').add({
+                name: name || 'زائر',
+                email: email || '',
+                message: message,
+                status: 'new',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
                 showCustomMsg(
                     "شكراً جزيلاً لك",
                     "تم استلام اقتراحك بنجاح. فريقنا سيقوم بمراجعته قريباً، رأيك يساعدنا دائماً على التطور.",
@@ -623,15 +839,107 @@
                     "bg-green-50",
                     "text-green-500"
                 );
-                
+
                 document.getElementById('sugg-message').value = '';
                 document.getElementById('sugg-name').value = '';
                 document.getElementById('sugg-email').value = '';
-                
+            }).catch((err) => {
+                console.error(err);
+                showCustomMsg(
+                    "حدث خطأ",
+                    "لم نتمكن من إرسال اقتراحك، برجاء المحاولة مرة أخرى.",
+                    "fa-circle-exclamation",
+                    "bg-red-50",
+                    "text-red-500"
+                );
+            }).finally(() => {
                 btn.innerHTML = originalText;
                 btn.classList.remove('opacity-80', 'cursor-not-allowed');
                 btn.classList.add('hover:-translate-y-1');
-            }, 1200);
+            });
+        }
+
+        // --- 6. Notifications (sent from the dashboard, shown here in real time) ---
+        const NOTIF_SEEN_KEY = 'massar_last_seen_notif';
+        let latestNotifTime = 0;
+
+        function showNotifications() {
+            const panel = document.getElementById('notif-panel');
+            panel.classList.toggle('hidden');
+            if (!panel.classList.contains('hidden')) {
+                // mark as seen
+                localStorage.setItem(NOTIF_SEEN_KEY, String(latestNotifTime));
+                document.getElementById('notif-dot').classList.add('hidden');
+            }
+        }
+
+        // Close the panel when clicking outside it
+        document.addEventListener('click', (e) => {
+            const panel = document.getElementById('notif-panel');
+            const btn = document.getElementById('notif-btn');
+            if (!panel || panel.classList.contains('hidden')) return;
+            if (!panel.contains(e.target) && !btn.contains(e.target)) {
+                panel.classList.add('hidden');
+            }
+        });
+
+        function timeAgo(date) {
+            const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+            if (seconds < 60) return 'الآن';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `منذ ${minutes} دقيقة`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `منذ ${hours} ساعة`;
+            const days = Math.floor(hours / 24);
+            return `منذ ${days} يوم`;
+        }
+
+        db.collection('notifications')
+            .orderBy('createdAt', 'desc')
+            .limit(20)
+            .onSnapshot((snapshot) => {
+                const list = document.getElementById('notif-list');
+                const dot = document.getElementById('notif-dot');
+
+                if (snapshot.empty) {
+                    list.innerHTML = '<p class="text-center text-gray-400 text-sm py-8">لا توجد إشعارات حالياً</p>';
+                    return;
+                }
+
+                const lastSeen = Number(localStorage.getItem(NOTIF_SEEN_KEY) || 0);
+                let hasUnread = false;
+                let html = '';
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const createdAt = data.createdAt ? data.createdAt.toDate() : new Date();
+                    const ts = createdAt.getTime();
+                    if (ts > latestNotifTime) latestNotifTime = ts;
+                    if (ts > lastSeen) hasUnread = true;
+
+                    html += `
+                        <div class="p-4 hover:bg-gray-50 transition-colors">
+                            <div class="flex items-start gap-3">
+                                <div class="w-9 h-9 shrink-0 rounded-lg bg-blue-50 text-primary flex items-center justify-center">
+                                    <i class="fa-solid fa-bell text-sm"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-bold text-dark text-sm">${escapeHtml(data.title || '')}</p>
+                                    <p class="text-gray-500 text-sm mt-0.5 leading-relaxed">${escapeHtml(data.body || '')}</p>
+                                    <p class="text-gray-400 text-xs mt-1">${timeAgo(createdAt)}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                list.innerHTML = html;
+                dot.classList.toggle('hidden', !hasUnread);
+            }, (err) => console.error('notif listener error', err));
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
         }
     </script>
 </body>

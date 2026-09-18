@@ -1,0 +1,591 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسار تطوير التطبيقات | منصة مسار</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Modern Blue
+                        secondary: '#0D9488', // Teal
+                        dark: '#0F172A', // Slate 900
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        /* شريط التمرير */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* --- Sidebar Menu Animations --- */
+        .hamburger-line {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center;
+        }
+        .menu-open .line-1 { 
+            transform: translateY(8px) rotate(45deg); 
+            background-color: #2563EB; 
+        }
+        .menu-open .line-2 { 
+            opacity: 0; 
+            transform: scale(0); 
+        }
+        .menu-open .line-3 { 
+            transform: translateY(-8px) rotate(-45deg); 
+            background-color: #2563EB; 
+        }
+
+        #sidebar-menu {
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: top left;
+            transform: scaleY(0) translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        #sidebar-menu.is-active {
+            transform: scaleY(1) translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-link {
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #sidebar-menu.is-active .sidebar-link {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .sidebar-link:nth-child(1) { transition-delay: 0.1s; }
+        .sidebar-link:nth-child(2) { transition-delay: 0.2s; }
+        .sidebar-link:nth-child(3) { transition-delay: 0.3s; }
+        .sidebar-link:nth-child(4) { transition-delay: 0.4s; }
+        .sidebar-link:nth-child(5) { transition-delay: 0.5s; }
+
+        #menu-overlay {
+            transition: opacity 0.3s ease;
+        }
+        
+        /* هندسة الخط الزمني لتكون مريحة جداً على الهاتف */
+        .timeline-container {
+            position: relative;
+            padding-bottom: 4rem;
+        }
+        
+        /* الخط المركزي */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 44px; /* محسوبة بدقة لتتوسط الأيقونة على الهاتف */
+            width: 4px;
+            background: linear-gradient(to bottom, #DBEAFE, #93C5FD, #C4B5FD, #FBCFE8, #D1FAE5, #99F6E4);
+            border-radius: 4px;
+            z-index: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .timeline-container::before {
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+
+        /* تنظيف العوامات (Clearfix) لترتيب الكروت المتبادلة */
+        .clear-both { clear: both; }
+
+        /* تأثيرات الكروت */
+        .timeline-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timeline-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased relative custom-scrollbar overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100 sticky top-0 z-50 relative" id="main-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20">
+                <div class="flex items-center relative z-50">
+                    <a href="index.html" class="flex items-center gap-2 group">
+                        <div class="w-10 h-10 bg-primary text-white rounded-lg flex items-center justify-center text-xl font-bold group-hover:bg-blue-700 transition-colors">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <span class="font-extrabold text-2xl text-dark tracking-wide">مَسار</span>
+                    </a>
+                </div>
+                
+                <!-- Hamburger Button (Visible on ALL screens) -->
+                <div class="flex items-center relative z-50">
+                    <button id="menu-toggle-btn" class="w-12 h-12 text-dark hover:text-primary focus:outline-none flex flex-col justify-center items-center gap-1.5 rounded-xl bg-gray-50 hover:bg-blue-50 transition-colors shadow-sm border border-gray-100 relative z-[60]">
+                        <span class="hamburger-line line-1 w-6 h-0.5 bg-current rounded-full block"></span>
+                        <span class="hamburger-line line-2 w-5 h-0.5 bg-current rounded-full block self-end ml-3"></span>
+                        <span class="hamburger-line line-3 w-6 h-0.5 bg-current rounded-full block"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stylish Sidebar Menu -->
+        <div id="sidebar-menu" class="absolute top-20 left-4 sm:left-6 lg:left-8 w-[280px] bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-gray-100 p-3 z-40 overflow-hidden before:absolute before:top-0 before:left-0 before:w-full before:h-1 before:bg-gradient-to-r before:from-primary before:to-secondary">
+            <div class="flex flex-col space-y-1 mt-2">
+                <a href="index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-house text-sm"></i>
+                    </div>
+                    الرئيسية
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <!-- Active Page Indicator (المسارات التقنية) -->
+                <a href="roadmap.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-primary font-bold bg-blue-50 transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-primary transition-colors">
+                        <i class="fa-solid fa-route text-sm"></i>
+                    </div>
+                    المسارات التقنية
+                </a>
+                
+                <a href="work.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-briefcase text-sm"></i>
+                    </div>
+                    الجامعة وسوق العمل
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                <a href="guidance.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group relative overflow-hidden">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-lightbulb text-sm"></i>
+                    </div>
+                    إرشادات ونصائح
+                    <div class="absolute bottom-0 left-4 right-4 h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-right"></div>
+                </a>
+                
+                <div class="my-2 border-t border-gray-100 w-full"></div>
+                
+                <a href="developer.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl text-dark font-bold hover:bg-blue-50 hover:text-primary transition-all group mt-2">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-code text-sm"></i>
+                    </div>
+                    عن المطور
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay for closing sidebar when clicking outside -->
+    <div id="menu-overlay" class="fixed inset-0 bg-gray-900/20 backdrop-blur-sm z-30 opacity-0 pointer-events-none"></div>
+
+    
+    <!-- Header Section -->
+    <header class="bg-white py-16 md:py-24 border-b border-gray-100 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-72 h-72 bg-blue-50 rounded-full blur-3xl opacity-60 -translate-y-1/2 translate-x-1/4"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-purple-50 rounded-full blur-3xl opacity-60 translate-y-1/2 -translate-x-1/4"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex items-center gap-4 mb-8">
+                <a href="roadmap.html" class="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-primary hover:text-white transition-colors border border-gray-200 hover:border-primary">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <span class="text-sm font-bold text-primary bg-blue-50 px-4 py-2 rounded-full uppercase tracking-wider border border-blue-100">Mobile Development</span>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-10 items-start lg:items-center">
+                <div class="w-28 h-28 md:w-40 md:h-40 bg-gradient-to-br from-blue-50 to-blue-100 rounded-[2rem] border border-blue-200 flex items-center justify-center text-6xl md:text-7xl text-primary shadow-xl shadow-blue-500/10 flex-shrink-0 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                    <i class="fa-solid fa-mobile-screen"></i>
+                </div>
+                <div>
+                    <h1 class="text-4xl md:text-6xl font-black text-dark mb-6 leading-tight">الدليل الشامل لتطوير التطبيقات</h1>
+                    <p class="text-gray-600 text-lg md:text-xl max-w-4xl leading-relaxed">
+                        تطبيقات الموبايل هي أكثر وسيلة يتفاعل بيها المستخدمون مع التقنية يوميًا. في هذا المسار هناخدك من أساسيات البرمجة الشيئية المطبّقة على الموبايل، مرورًا بتخزين البيانات والاتصال بالخوادم، وصولًا لنشر تطبيقك على المتاجر الرسمية.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Domains Overview -->
+    <section class="py-16 bg-gray-50 border-b border-gray-100 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">أعمدة تطوير التطبيقات</h2>
+                <p class="text-gray-500 text-lg">من الكود الأساسي إلى تطبيق منشور فعليًا يستخدمه الناس على هواتفهم.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:border-green-200 transition-colors group">
+                    <div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center text-3xl text-green-500 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-3">الأساس البرمجي <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Core Programming</span></h3>
+                    <p class="text-gray-600 text-base leading-relaxed mb-6">البرمجة الشيئية ولغة التطوير كنقطة انطلاق لأي تطبيق موبايل احترافي.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">OOP</span><span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">Kotlin/Swift/Flutter</span>
+                    </div>
+                </div>
+                <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:border-blue-200 transition-colors group">
+                    <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-3xl text-blue-500 mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-dark mb-3">البيانات والاتصال <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Data & Connectivity</span></h3>
+                    <p class="text-gray-600 text-base leading-relaxed mb-6">التخزين المحلي والاتصال بالخوادم لجعل التطبيق يعمل بذكاء متصلًا أو غير متصل.</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">SQLite</span><span class="text-xs font-bold px-3 py-1.5 bg-gray-50 border border-gray-100 rounded-lg text-gray-600">REST API</span>
+                    </div>
+                </div>
+                <div class="bg-dark p-8 rounded-[2rem] shadow-xl relative overflow-hidden group">
+                    <div class="absolute -right-10 -top-10 text-9xl text-white opacity-5"><i class="fa-solid fa-rocket"></i></div>
+                    <div class="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl text-purple-400 mb-6 relative z-10 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-rocket"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-3 relative z-10">الأداء والنشر <span class="block text-sm text-gray-400 font-bold mt-2 uppercase tracking-wide">Performance & Deployment</span></h3>
+                    <p class="text-gray-300 text-base leading-relaxed mb-6 relative z-10">تحسين أداء التطبيق ونشره على المتاجر الرسمية ليصل لملايين المستخدمين.</p>
+                    <div class="flex flex-wrap gap-2 relative z-10">
+                        <span class="text-xs font-bold px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-300">State Management</span><span class="text-xs font-bold px-3 py-1.5 bg-purple-500/20 border border-purple-500/30 rounded-lg text-purple-300">App Store</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mega Timeline Section -->
+    <main class="py-20 md:py-32 relative overflow-hidden bg-white">
+        <div class="absolute top-40 left-0 w-[500px] h-[500px] bg-blue-50 rounded-full blur-[100px] opacity-50 pointer-events-none"></div>
+        <div class="absolute bottom-40 right-0 w-[500px] h-[500px] bg-teal-50 rounded-full blur-[100px] opacity-50 pointer-events-none"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-24">
+                <span class="bg-dark text-white px-5 py-2 rounded-full text-sm font-bold tracking-widest shadow-md inline-block mb-6">خريطة الطريق التفصيلية</span>
+                <h2 class="text-3xl md:text-5xl font-extrabold text-dark mb-6 leading-tight">الرحلة من الصفر إلى الاحتراف</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">كل مرحلة موضّح فيها المهارات المطلوبة، وإذا كانت مرتبطة بمقرر فعلي بكليتك هتلاقي صندوق 🎓 يوضح ذلك.</p>
+            </div>
+
+            <div class="timeline-container">
+                <!-- ================== STEP 1 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-gray-400 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-cubes text-gray-500 group-hover:text-primary text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-gray-400">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-gray-400 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الأولى</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">أساسيات البرمجة الشيئية للموبايل</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">كل تطبيق موبايل احترافي مبني بنفس عقلية البرمجة الشيئية اللي بتدرسها في الكلية، بس بتطبيقات مختلفة.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-shapes text-gray-400"></i> مفاهيم OOP التطبيقية</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تنظيم كود التطبيق في مكونات منطقية قابلة لإعادة الاستخدام.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-arrows-spin text-gray-400"></i> دورة حياة التطبيق (Lifecycle)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">فهم متى يبدأ التطبيق ويتوقف ويعيد التشغيل، وكيف تدير الموارد في كل مرحلة.</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: البرمجة الشيئية</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">نفس المفاهيم اللي درستها في مقرر البرمجة الشيئية، لكن مطبقة على بيئة الموبايل بقيودها الخاصة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!-- ================== STEP 2 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-orange-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-mobile-screen-button text-orange-500 text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-orange-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-orange-500 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الثانية</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">لغة التطوير وواجهة المستخدم</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">اختيار اللغة والأداة المناسبة، وبناء واجهات تحس إنها جزء طبيعي من الهاتف مش موقع ويب مصغّر.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-code text-gray-400"></i> Kotlin أو Swift أو Flutter</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">اللغات والأطر الأكثر استخدامًا لبناء تطبيقات أندرويد و iOS اليوم.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-palette text-gray-400"></i> بناء الواجهات التفاعلية</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تصميم شاشات سلسة ومتجاوبة تناسب أحجام الشاشات المختلفة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!-- ================== STEP 3 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-red-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-database text-red-500 text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-red-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-red-500 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الثالثة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">تخزين البيانات محليًا</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">مش كل بيانات التطبيق محتاجة إنترنت — التخزين المحلي بيخلي التطبيق شغال بسرعة حتى بدون اتصال.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-hard-drive text-gray-400"></i> قواعد بيانات محلية (SQLite)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تخزين بيانات المستخدم مباشرة على الجهاز للوصول السريع دون اتصال بالإنترنت.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-clock-rotate-left text-gray-400"></i> التخزين المؤقت (Caching)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تحسين أداء التطبيق عن طريق حفظ البيانات المتكررة الاستخدام مؤقتًا.</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: قواعد البيانات</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">نفس مبادئ مقرر قواعد البيانات، لكن مصممة للعمل بكفاءة داخل جهاز محدود الموارد زي الموبايل.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!-- ================== STEP 4 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-amber-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-cloud text-amber-600 text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-amber-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-amber-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الرابعة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">الاتصال بالخوادم وواجهات API</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">أغلب التطبيقات الحديثة مش جزيرة منعزلة — بتتواصل مع خوادم لجلب وتحديث البيانات باستمرار.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-arrow-right-arrow-left text-gray-400"></i> طلبات HTTP والتعامل مع REST API</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">إرسال واستقبال البيانات بين التطبيق والخادم بصيغة منظمة.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-key text-gray-400"></i> المصادقة والتوكينات (Auth Tokens)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">التأكد من هوية المستخدم بأمان دون طلب كلمة المرور في كل مرة.</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-dashed border-blue-200">
+                                    <h4 class="font-bold text-blue-900 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-graduation-cap text-primary"></i> 🎓 مرتبط بمقرر: الشبكات</h4>
+                                    <p class="text-sm text-blue-800/80 leading-relaxed">فهمك لبروتوكولات الشبكة من مقرر الشبكات هو نفسه الأساس اللي بيشتغل عليه أي تطبيق متصل بالإنترنت.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!-- ================== STEP 5 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-blue-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-gauge-high text-blue-500 text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-right pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-blue-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] md:-right-auto md:-left-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white md:border-l-0 md:border-r-[12px] md:border-r-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-blue-500 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة الخامسة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">إدارة الحالة والأداء</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">تطبيق بطيء أو بيستهلك بطارية بسرعة هيتمسح من على الهاتف فورًا مهما كانت فكرته حلوة.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-diagram-project text-gray-400"></i> أنماط إدارة الحالة (State Management)</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تنظيم كيفية تدفق البيانات وتحديث الواجهة بشكل متسق وقابل للتوقع.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-battery-half text-gray-400"></i> تحسين الأداء واستهلاك الموارد</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">التأكد من أن التطبيق سريع الاستجابة وموفر للبطارية والذاكرة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+                <!-- ================== STEP 6 ================== -->
+                <div class="relative w-full mb-16 md:mb-28 clear-both overflow-hidden md:overflow-visible group">
+                    <div class="absolute top-[24px] md:top-1/2 md:-translate-y-1/2 right-[14px] md:right-1/2 md:translate-x-1/2 w-16 h-16 rounded-full bg-white border-[5px] border-teal-500 shadow-xl flex items-center justify-center z-20 group-hover:scale-110 transition-all duration-300">
+                        <i class="fa-solid fa-store text-teal-600 text-2xl transition-colors"></i>
+                    </div>
+
+                    <div class="w-full md:w-[45%] float-left pr-[90px] md:pr-0 pl-0 md:pl-0">
+                        <div class="bg-white p-6 md:p-10 rounded-[2rem] shadow-sm border border-gray-100 timeline-card relative border-t-teal-500">
+                            <span class="absolute top-[46px] md:top-1/2 md:-translate-y-1/2 -right-[12px] w-0 h-0 border-y-[10px] border-y-transparent border-l-[12px] border-l-white drop-shadow-sm z-10"></span>
+                            <div class="mb-6 border-b border-gray-50 pb-5">
+                                <span class="text-teal-600 text-sm font-black mb-2 uppercase tracking-widest block">المرحلة السادسة</span>
+                                <h3 class="text-2xl font-bold text-dark mb-3">النشر على المتاجر</h3>
+                                <p class="text-gray-600 text-base leading-relaxed">الخطوة الأخيرة اللي بتحول مشروعك من ملف على جهازك لتطبيق حقيقي يقدر ملايين الناس يحملوه.</p>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-google-play text-gray-400"></i> متطلبات Google Play وApp Store</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">الشروط والمعايير اللازمة لقبول تطبيقك في المتاجر الرسمية.</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-2xl border border-gray-100/50">
+                                    <h4 class="font-bold text-dark text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-signature text-gray-400"></i> التوقيع الرقمي والتحديثات المستمرة</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">تأمين هوية التطبيق ونشر تحديثات آمنة له بمرور الوقت.</p>
+                                </div>
+                                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100">
+                                    <h4 class="font-bold text-amber-800 text-sm flex items-center gap-2 mb-2"><i class="fa-solid fa-plus text-amber-500"></i> مهارة عملية إضافية (خارج المقررات)</h4>
+                                    <p class="text-sm text-amber-700/90 leading-relaxed">عملية النشر والامتثال لمتطلبات المتاجر مهارة صناعية بحتة، نادرًا ما تُذكر في أي مقرر أكاديمي.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear-both"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Resources Section -->
+    <section class="py-24 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block p-4 rounded-full bg-blue-100 text-primary mb-6">
+                    <i class="fa-solid fa-book-open-reader text-3xl"></i>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark mb-4">أهم المصادر التعليمية المجانية</h2>
+                <p class="text-gray-500 text-lg max-w-2xl mx-auto">وفرنا لك أفضل المنصات والقنوات لتبدأ رحلتك التعليمية فوراً ودون دفع أي تكاليف.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <a href="https://developer.android.com/courses" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-[#3DDC84]/10 flex items-center justify-center text-[#3DDC84] text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-android"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">Android Developers</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">المصدر الرسمي من جوجل لتعلم تطوير تطبيقات أندرويد بلغة Kotlin من الصفر.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة المصدر <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+                <a href="https://docs.flutter.dev/" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-[#02569B]/10 flex items-center justify-center text-[#02569B] text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-mobile-screen"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">Flutter Docs</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">التوثيق الرسمي لإطار Flutter لبناء تطبيقات تعمل على أندرويد و iOS من كود واحد.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة المصدر <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+                <a href="https://www.freecodecamp.org/" target="_blank" class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group flex flex-col items-center text-center">
+                    <div class="w-20 h-20 rounded-full bg-[#0a0a23]/10 flex items-center justify-center text-[#0a0a23] text-4xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-free-code-camp"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-dark mb-3">freeCodeCamp</h3>
+                    <p class="text-gray-500 text-sm leading-relaxed mb-6 flex-grow">دورات مجانية شاملة في تطوير تطبيقات الموبايل مع مشاريع عملية حقيقية.</p>
+                    <span class="text-primary text-sm font-bold mt-auto group-hover:underline flex items-center gap-2">زيارة المصدر <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i></span>
+                </a>
+            </div>
+        </div>
+    </section>
+<!-- Footer -->
+    <footer class="bg-dark text-gray-300 py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-center justify-center gap-4 text-center">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-map-location-dot text-primary text-3xl"></i>
+                    <span class="font-extrabold text-3xl text-white tracking-wide">مَسار</span>
+                </div>
+                <p class="text-gray-400 text-lg">
+                    جميع الحقوق محفوظة لمنصة مسار © 2026
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Setup Sidebar Menu Animations
+        document.addEventListener('DOMContentLoaded', () => {
+            setupSidebarMenu();
+        });
+
+        function setupSidebarMenu() {
+            const btn = document.getElementById('menu-toggle-btn');
+            const menu = document.getElementById('sidebar-menu');
+            const overlay = document.getElementById('menu-overlay');
+            const links = document.querySelectorAll('.sidebar-link');
+            let isMenuOpen = false;
+
+            function openMenu() {
+                isMenuOpen = true;
+                btn.classList.add('menu-open');
+                menu.classList.add('is-active');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100', 'pointer-events-auto');
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                btn.classList.remove('menu-open');
+                menu.classList.remove('is-active');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                overlay.classList.remove('opacity-100', 'pointer-events-auto');
+            }
+
+            function toggleMenu(e) {
+                e.stopPropagation();
+                if (isMenuOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            btn.addEventListener('click', toggleMenu);
+            overlay.addEventListener('click', closeMenu);
+
+            links.forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if(isMenuOpen && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+        }
+    </script>
+</body>
+</html>
